@@ -1,0 +1,2857 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Kajol Creation — Seller Dashboard</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Playfair+Display:wght@500;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f4ef;
+            color: #29231f;
+            font: 13px 'DM Sans', sans-serif;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .top {
+            background: #29231f;
+            color: white;
+            padding: 22px 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font: 600 26px 'Playfair Display';
+        }
+
+        .top a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .wrap {
+            width: min(1200px, 94%);
+            margin: 35px auto;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 22px;
+            gap: 20px;
+        }
+
+        h1,
+        h2 {
+            font-family: 'Playfair Display';
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin: 5px 0 0;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .stat,
+        .panel {
+            background: #fff;
+            border: 1px solid #e5dcd2;
+            border-radius: 7px;
+        }
+
+        .stat {
+            padding: 20px;
+        }
+
+        .stat small {
+            color: #777;
+            text-transform: uppercase;
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .stat b {
+            display: block;
+            font-size: 24px;
+            margin-top: 6px;
+        }
+
+        /* =========================
+           FILTERS
+        ========================= */
+
+        .filter-box {
+            display: flex;
+            gap: 12px;
+            margin: 0 0 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            height: 45px;
+            background: #fff;
+            border: 1px solid #e5ddd4;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+        }
+
+        .search-box span {
+            font-size: 16px;
+            margin-right: 8px;
+        }
+
+        .search-box input {
+            width: 100%;
+            border: 0;
+            outline: none;
+            font-size: 13px;
+            color: #24211e;
+            background: transparent;
+        }
+
+        .filter-box select {
+            height: 45px;
+            min-width: 160px;
+            padding: 0 12px;
+            border: 1px solid #e5ddd4;
+            border-radius: 6px;
+            background: #fff;
+            outline: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .reset-filter {
+            height: 45px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 6px;
+            background: #24211e;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .reset-filter:hover {
+            background: #8b6045;
+        }
+
+        /* =========================
+           PANEL
+        ========================= */
+
+        .panel {
+            overflow: hidden;
+        }
+
+        .bar {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bar h2 {
+            margin: 0;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            font-size: 11px;
+            vertical-align: middle;
+        }
+
+        th {
+            font-size: 9px;
+            color: #777;
+            letter-spacing: .5px;
+        }
+
+        td strong {
+            font-weight: 700;
+        }
+
+        .date {
+            color: #888;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        td select {
+            padding: 7px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .view,
+        .clear {
+            padding: 8px 11px;
+            border: 0;
+            border-radius: 4px;
+            background: #29231f;
+            color: white;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .view:hover {
+            opacity: .85;
+        }
+
+        .clear {
+            background: white;
+            color: #29231f;
+            border: 1px solid #ddd;
+        }
+
+        .clear:hover {
+            background: #f3f3f3;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty,
+        .no-result {
+            text-align: center;
+            padding: 70px 20px;
+            color: #777;
+        }
+
+        .no-result {
+            padding: 50px 20px;
+        }
+
+        .no-result-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        /* =========================
+           ORDER MODAL
+        ========================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: min(800px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+        }
+
+        .modal-box h2 {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 15px;
+            top: 12px;
+            border: none;
+            background: #f3f3f3;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            background: #e9e9e9;
+        }
+
+        /* =========================
+           ORDER INFO
+        ========================= */
+
+        .order-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .order-info div {
+            background: #f8f6f2;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .order-info strong {
+            display: block;
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        /* =========================
+           ORDER PRODUCTS
+        ========================= */
+
+        .order-product {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-product img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .order-product-info {
+            flex: 1;
+        }
+
+        .order-product-info h4 {
+            margin: 0 0 5px;
+            font-size: 14px;
+        }
+
+        .order-product-info p {
+            margin: 3px 0;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .product-price {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           TOTAL
+        ========================= */
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f6f2;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #f1eee9;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           PRODUCT MANAGEMENT
+        ========================= */
+        .product-manager {
+            margin: 0 0 22px;
+        }
+
+        .product-form {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .product-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .product-field label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #777;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        .product-field input,
+        .product-field select,
+        .product-field textarea {
+            width: 100%;
+            border: 1px solid #e5ddd4;
+            border-radius: 6px;
+            background: #fff;
+            padding: 11px 12px;
+            outline: none;
+            font: 13px 'DM Sans', sans-serif;
+            color: #29231f;
+        }
+
+        .product-field textarea {
+            min-height: 95px;
+            resize: vertical;
+        }
+
+        .product-field input:focus,
+        .product-field select:focus,
+        .product-field textarea:focus {
+            border-color: #8b6045;
+        }
+
+        .image-upload {
+            border: 1px dashed #cdbfb2;
+            border-radius: 8px;
+            padding: 12px;
+            background: #faf8f5;
+        }
+
+        .image-preview {
+            display: none;
+            margin-top: 10px;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .image-preview.show {
+            display: flex;
+        }
+
+        .image-preview img {
+            width: 72px;
+            height: 72px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e5dcd2;
+        }
+
+        .product-form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .primary-product-btn,
+        .secondary-product-btn,
+        .edit-product-btn,
+        .delete-product-btn {
+            border: 0;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font: 600 11px 'DM Sans', sans-serif;
+            cursor: pointer;
+        }
+
+        .primary-product-btn {
+            background: #29231f;
+            color: #fff;
+        }
+
+        .primary-product-btn:hover {
+            background: #8b6045;
+        }
+
+        .secondary-product-btn {
+            background: #f1eee9;
+            color: #29231f;
+        }
+
+        .seller-product-list {
+            padding: 0 20px 20px;
+        }
+
+        .seller-product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .seller-product-card {
+            border: 1px solid #e5dcd2;
+            border-radius: 9px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .seller-product-card img {
+            width: 100%;
+            height: 175px;
+            object-fit: cover;
+            display: block;
+            background: #f3f0eb;
+        }
+
+        .seller-product-card-body {
+            padding: 13px;
+        }
+
+        .seller-product-card h3 {
+            margin: 0 0 5px;
+            font: 600 15px 'Playfair Display', serif;
+        }
+
+        .seller-product-meta {
+            color: #777;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .seller-product-price {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .seller-product-desc {
+            color: #777;
+            line-height: 1.5;
+            font-size: 11px;
+            min-height: 34px;
+        }
+
+        .seller-product-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .edit-product-btn {
+            background: #29231f;
+            color: #fff;
+            flex: 1;
+        }
+
+        .delete-product-btn {
+            background: #f3eee8;
+            color: #29231f;
+            flex: 1;
+        }
+
+        .seller-product-empty {
+            padding: 35px 10px;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+        }
+
+        .product-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        .product-checkbox input {
+            width: auto;
+        }
+
+        @media(max-width:900px) {
+            .seller-product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media(max-width:700px) {
+            .product-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-field.full {
+                grid-column: auto;
+            }
+
+            .seller-product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-form,
+            .seller-product-list {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:700px) {
+
+            .top {
+                padding: 18px 4%;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .top span {
+                display: none;
+            }
+
+            .wrap {
+                width: 94%;
+                margin: 25px auto;
+            }
+
+            .head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 34px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat {
+                min-width: 0;
+            }
+
+            .filter-box {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .filter-box select,
+            .reset-filter {
+                width: 100%;
+            }
+
+            .bar {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-box {
+                padding: 18px;
+            }
+
+            .order-product {
+                align-items: flex-start;
+            }
+
+            .order-product img {
+                width: 55px;
+                height: 55px;
+            }
+
+            .product-price {
+                font-size: 12px;
+            }
+
+            .order-total {
+                font-size: 15px;
+            }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .logout-btn {
+            border: 1px solid rgba(255, 255, 255, .4);
+            background: transparent;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #29231f;
+        }
+
+        @media(max-width:700px) {
+
+            .header-right {
+                gap: 8px;
+            }
+
+            .header-right span {
+                display: none;
+            }
+
+            .logout-btn {
+                padding: 7px 11px;
+                font-size: 10px;
+            }
+        }
+
+        .delete-order-btn {
+            padding: 8px 11px;
+            border: 0;
+            border-radius: 4px;
+            background: #f3eee8;
+            color: #8b2f2f;
+            border: 1px solid #e4d5ca;
+            font-size: 10px;
+            cursor: pointer;
+            margin-left: 6px;
+        }
+
+        .delete-order-btn:hover {
+            background: #8b2f2f;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="top">
+
+        <div class="logo">
+            Kajol Creation
+        </div>
+
+        <div class="header-right">
+            <span>SELLER DASHBOARD</span>
+
+            <button class="logout-btn" onclick="logout()">
+                Logout
+            </button>
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="wrap">
+
+        <div class="head">
+
+            <div>
+                <small>STORE MANAGEMENT</small>
+                <h1>Orders</h1>
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             STATS
+        ========================= -->
+
+        <div class="stats">
+
+            <div class="stat">
+                <small>Total Orders</small>
+                <b id="n">0</b>
+            </div>
+
+            <div class="stat">
+                <small>Pending</small>
+                <b id="p">0</b>
+            </div>
+
+            <div class="stat">
+                <small>Confirmed</small>
+                <b id="c">0</b>
+            </div>
+
+            <div class="stat">
+                <small>Total Sales</small>
+                <b id="s">₹0</b>
+            </div>
+
+            <div class="stat">
+                <small>Shipped</small>
+                <b id="shippedOrders">0</b>
+            </div>
+
+            <div class="stat">
+                <small>Delivered</small>
+                <b id="deliveredOrders">0</b>
+            </div>
+
+            <div class="stat">
+                <small>Cancelled</small>
+                <b id="cancelledOrders">0</b>
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             PRODUCT MANAGEMENT
+        ========================= -->
+        <section class="panel product-manager">
+            <div class="bar">
+                <h2 id="productFormTitle">Add Product</h2>
+            </div>
+
+            <form class="product-form" id="productForm">
+                <input type="hidden" id="productEditId">
+
+                <div class="product-form-grid">
+                    <div class="product-field">
+                        <label for="productName">Product Name *</label>
+                        <input id="productName" type="text" placeholder="e.g. Royal Floral Curtain" required>
+                    </div>
+
+                    <div class="product-field">
+                        <label for="productCategory">Category *</label>
+                        <select id="productCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Curtains">Curtains</option>
+                            <option value="Bedsheets">Bedsheets</option>
+                            <option value="Comforters">Comforters</option>
+                            <option value="Doormats">Doormats</option>
+                            <option value="Blankets">Blankets</option>
+                            <option value="Cushions">Cushions</option>
+                            <option value="Bedcovers">Bedcovers</option>
+                            <option value="Rugs">Rugs</option>
+                        </select>
+                    </div>
+
+                    <div class="product-field">
+                        <label for="productPrice">Selling Price (₹) *</label>
+                        <input id="productPrice" type="number" min="0" step="1" placeholder="1499" required>
+                    </div>
+
+                    <div class="product-field">
+                        <label for="productOldPrice">Original Price (₹)</label>
+                        <input id="productOldPrice" type="number" min="0" step="1" placeholder="1999">
+                    </div>
+
+                    <div class="product-field">
+                        <label for="productRating">Rating</label>
+                        <input id="productRating" type="text" placeholder="4.8 (25)">
+                    </div>
+
+                    <div class="product-field">
+                        <label for="productStock">Stock / Quantity</label>
+                        <input id="productStock" type="number" min="0" step="1" placeholder="50" value="0">
+                    </div>
+
+                    <div class="product-field full">
+                        <label for="productDescription">Description</label>
+                        <textarea id="productDescription"
+                            placeholder="Write product details, fabric, size, quality, etc."></textarea>
+                    </div>
+
+                    <div class="product-field full">
+                        <label for="productImage">Product Image *</label>
+                        <div class="image-upload">
+                            <input id="productImage" type="file" accept="image/*">
+                            <div class="image-preview" id="productImagePreview">
+                                <img id="productImagePreviewImg" alt="Product preview">
+                                <span id="productImagePreviewText">Selected image</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-field full">
+                        <label class="product-checkbox">
+                            <input id="productNewArrival" type="checkbox">
+                            Show this product in New Arrivals
+                        </label>
+                    </div>
+                </div>
+
+                <div class="product-form-actions">
+                    <button class="primary-product-btn" type="submit" id="productSaveBtn">
+                        Add Product
+                    </button>
+                    <button class="secondary-product-btn" type="button" id="productCancelBtn" style="display:none;">
+                        Cancel Edit
+                    </button>
+                </div>
+            </form>
+
+            <div class="bar">
+                <h2>My Products</h2>
+                <span style="color:#777;font-size:11px;" id="productCountLabel">0 products</span>
+            </div>
+
+            <div class="seller-product-list">
+                <div class="seller-product-grid" id="sellerProductGrid"></div>
+            </div>
+        </section>
+
+
+        <!-- =========================
+             FILTERS
+        ========================= -->
+
+        <div class="filter-box">
+
+            <div class="search-box">
+
+                <span>🔍</span>
+
+                <input type="text" id="orderSearch" placeholder="Search order ID, customer or mobile...">
+
+            </div>
+
+
+            <select id="statusFilter">
+
+                <option value="All">
+                    All Orders
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Confirmed">
+                    Confirmed
+                </option>
+
+                <option value="Shipped">
+                    Shipped
+                </option>
+
+                <option value="Delivered">
+                    Delivered
+                </option>
+
+                <option value="Cancelled">
+                    Cancelled
+                </option>
+
+            </select>
+
+
+            <button class="reset-filter" id="resetFilters">
+                Reset
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             ORDERS TABLE
+        ========================= -->
+
+        <section class="panel">
+
+            <div class="bar">
+
+                <h2>
+                    Recent Orders
+                </h2>
+
+            </div>
+
+            <div id="table"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         ORDER DETAILS MODAL
+    ========================= -->
+
+    <div class="modal" id="orderModal">
+
+        <div class="modal-box">
+
+            <button class="modal-close" onclick="closeOrderModal()">
+                ×
+            </button>
+
+            <h2>
+                Order Details
+            </h2>
+
+            <div id="orderDetails"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+
+    <script>
+        // ============================================
+        // SELLER LOGIN PROTECTION
+        // ============================================
+
+        if (localStorage.getItem("sellerLoggedIn") !== "true") {
+            window.location.replace("seller-login.html");
+        }
+        /* =========================
+           LOAD ORDERS
+        ========================= */
+        function logout() {
+
+            localStorage.removeItem("sellerLoggedIn");
+
+            window.location.href = "seller-login.html";
+
+        }
+        const ORDER_API_BASE_URL = "https://localhost:57742/api/Order";
+
+        let orders = [];
+        let ordersLoading = false;
+
+        function normalizeDbOrder(order) {
+            const items = Array.isArray(order.items)
+                ? order.items.map(item => ({
+                    id: item.id,
+                    productId: item.productId,
+                    name: item.productName || "Product",
+                    img: item.productImage || "",
+                    cat: item.category || "Home & Living",
+                    price: Number(item.unitPrice || 0),
+                    qty: Number(item.quantity || 0),
+                    totalPrice: Number(item.totalPrice || 0)
+                }))
+                : [];
+
+            return {
+                id: order.id,
+                orderNumber: order.orderNumber || `PH-${order.id}`,
+                customerId: order.customerId,
+                status: order.status || "Pending",
+                payment: order.paymentMethod || "N/A",
+                paymentStatus: order.paymentStatus || "Pending",
+                total: Number(order.totalAmount || 0),
+                subtotal: Number(order.subTotal || 0),
+                shippingCharge: Number(order.shippingCharge || 0),
+                discount: Number(order.discount || 0),
+                date: order.createdAt || new Date().toISOString(),
+                updatedAt: order.updatedAt || null,
+                cancelledAt: order.cancelledAt || null,
+                razorpayOrderId: order.razorpayOrderId || null,
+                razorpayPaymentId: order.razorpayPaymentId || null,
+                customer: {
+                    name: order.customerName || "N/A",
+                    email: order.customerEmail || "",
+                    phone: order.customerPhone || "",
+                    address: order.shippingAddress || "",
+                    city: order.city || "",
+                    state: order.state || "",
+                    pincode: order.pincode || ""
+                },
+                items
+            };
+        }
+
+        async function loadOrdersFromDatabase() {
+            if (ordersLoading) return;
+
+            ordersLoading = true;
+
+            if (!orders.length) {
+                table.innerHTML = `
+                    <div class="empty">
+                        ⏳<br><br>
+                        Loading orders from database...
+                    </div>
+                `;
+            }
+
+            try {
+                const response = await fetch(ORDER_API_BASE_URL);
+
+                if (!response.ok) {
+                    throw new Error(`Order API returned ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(data.message || "Could not load orders.");
+                }
+
+                orders = Array.isArray(data.orders)
+                    ? data.orders.map(normalizeDbOrder)
+                    : [];
+
+                render();
+            } catch (error) {
+                console.error("Seller order loading error:", error);
+                orders = [];
+
+                table.innerHTML = `
+                    <div class="empty">
+                        ⚠️<br><br>
+                        Could not load orders from database.<br><br>
+                        <small style="color:#777;">
+                            Make sure the Kajol Creation API is running on
+                            https://localhost:57742
+                        </small><br><br>
+                        <button class="view" type="button" onclick="loadOrdersFromDatabase()">
+                            Retry
+                        </button>
+                    </div>
+                `;
+
+                updateStats();
+            } finally {
+                ordersLoading = false;
+            }
+        }
+
+
+        /* =========================
+           MONEY
+        ========================= */
+
+        const money = n =>
+            "₹" + Number(n || 0).toLocaleString("en-IN");
+
+
+
+        /* =========================
+           PRODUCT MANAGEMENT
+        ========================= */
+
+        const PRODUCT_API_BASE_URL =
+            "https://localhost:57742/api/Product";
+
+        let sellerProducts = [];
+
+        const productForm =
+            document.getElementById("productForm");
+
+        const productEditId =
+            document.getElementById("productEditId");
+
+        const productName =
+            document.getElementById("productName");
+
+        const productCategory =
+            document.getElementById("productCategory");
+
+        const productPrice =
+            document.getElementById("productPrice");
+
+        const productOldPrice =
+            document.getElementById("productOldPrice");
+
+        const productRating =
+            document.getElementById("productRating");
+
+        const productStock =
+            document.getElementById("productStock");
+
+        const productDescription =
+            document.getElementById("productDescription");
+
+        const productImage =
+            document.getElementById("productImage");
+
+        const productImagePreview =
+            document.getElementById("productImagePreview");
+
+        const productImagePreviewImg =
+            document.getElementById("productImagePreviewImg");
+
+        const productImagePreviewText =
+            document.getElementById("productImagePreviewText");
+
+        const productNewArrival =
+            document.getElementById("productNewArrival");
+
+        const productSaveBtn =
+            document.getElementById("productSaveBtn");
+
+        const productCancelBtn =
+            document.getElementById("productCancelBtn");
+
+        const sellerProductGrid =
+            document.getElementById("sellerProductGrid");
+
+        const productCountLabel =
+            document.getElementById("productCountLabel");
+
+        const productFormTitle =
+            document.getElementById("productFormTitle");
+
+
+        async function loadSellerProductsFromDatabase() {
+            try {
+                console.log("Loading seller products from database...");
+
+                const response = await fetch(
+                    PRODUCT_API_BASE_URL,
+                    {
+                        method: "GET",
+                        cache: "no-store"
+                    }
+                );
+
+                const text = await response.text();
+
+                let data = {};
+
+                try {
+                    data = text ? JSON.parse(text) : {};
+                } catch {
+                    data = {};
+                }
+
+                console.log("PRODUCT API STATUS:", response.status);
+                console.log("PRODUCT API RESPONSE:", data);
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        text ||
+                        `Product API returned ${response.status}`
+                    );
+                }
+
+                const dbProducts =
+                    Array.isArray(data.products)
+                        ? data.products
+                        : Array.isArray(data)
+                            ? data
+                            : [];
+
+                sellerProducts = dbProducts
+                    .filter(product =>
+                        product.isSellerProduct !== false
+                    )
+                    .map(product => ({
+                        id: Number(product.id),
+                        name: product.name || "Product",
+                        cat: product.category || product.cat || "Home Decor",
+                        price: Number(product.price || 0),
+                        old: product.oldPrice == null
+                            ? Number(product.old || 0)
+                            : Number(product.oldPrice),
+                        rating: product.rating == null
+                            ? ""
+                            : String(product.rating),
+                        stock: Number(product.stock || 0),
+                        desc: product.description || product.desc || "",
+                        img: product.image || product.img || "",
+                        isNew: !!product.isNew,
+                        isSellerProduct:
+                            product.isSellerProduct !== false,
+                        createdAt: product.createdAt || null,
+                        updatedAt: product.updatedAt || null
+                    }));
+
+                console.log(
+                    "SELLER PRODUCTS FROM DATABASE:",
+                    sellerProducts.length,
+                    sellerProducts
+                );
+
+                renderSellerProducts();
+
+            } catch (error) {
+                console.error(
+                    "SELLER PRODUCT DATABASE ERROR:",
+                    error
+                );
+
+                sellerProducts = [];
+                renderSellerProducts();
+
+                sellerProductGrid.innerHTML = `
+                    <div
+                        class="seller-product-empty"
+                        style="grid-column:1/-1;"
+                    >
+                        ⚠️<br><br>
+                        Could not load products from database.
+                        <br><br>
+                        <small>
+                            ${escapeHTML(
+                    error.message ||
+                    "Product API error"
+                )}
+                        </small>
+                        <br><br>
+                        <button
+                            type="button"
+                            class="view"
+                            onclick="loadSellerProductsFromDatabase()"
+                        >
+                            Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+
+        function resetProductForm() {
+            productForm.reset();
+
+            productEditId.value = "";
+            productStock.value = "0";
+            productImage.value = "";
+
+            productImagePreview.classList.remove("show");
+            productImagePreviewImg.removeAttribute("src");
+            productImagePreviewText.textContent = "Selected image";
+
+            productFormTitle.textContent = "Add Product";
+            productSaveBtn.textContent = "Add Product";
+            productCancelBtn.style.display = "none";
+        }
+
+
+        function readProductImage(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) {
+                    resolve("");
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = () => resolve(reader.result);
+
+                reader.onerror = () =>
+                    reject(
+                        new Error("Could not read image")
+                    );
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+
+        productImage.addEventListener("change", function () {
+            const file = this.files[0];
+
+            if (!file) {
+                productImagePreview.classList.remove("show");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                productImagePreviewImg.src = e.target.result;
+                productImagePreviewText.textContent = file.name;
+                productImagePreview.classList.add("show");
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+
+        function renderSellerProducts() {
+            productCountLabel.textContent =
+                `${sellerProducts.length} product${sellerProducts.length === 1 ? "" : "s"}`;
+
+            if (!sellerProducts.length) {
+                sellerProductGrid.innerHTML = `
+                    <div
+                        class="seller-product-empty"
+                        style="grid-column:1/-1;"
+                    >
+                        📦<br><br>
+                        No products added yet.
+                        <br>
+                        Add your first product using the form above.
+                    </div>
+                `;
+                return;
+            }
+
+            sellerProductGrid.innerHTML =
+                sellerProducts
+                    .slice()
+                    .reverse()
+                    .map(product => `
+                        <article class="seller-product-card">
+
+                            <img
+                                src="${escapeHTML(product.img)}"
+                                alt="${escapeHTML(product.name)}"
+                                onerror="this.src='https://via.placeholder.com/600x450?text=Product'"
+                            >
+
+                            <div class="seller-product-card-body">
+
+                                <h3>
+                                    ${escapeHTML(product.name)}
+                                </h3>
+
+                                <div class="seller-product-meta">
+                                    ${escapeHTML(
+                        product.cat || "Home Decor"
+                    )}
+                                    ${product.isNew ? " • New Arrival" : ""}
+                                </div>
+
+                                <div class="seller-product-price">
+                                    ${money(product.price)}
+
+                                    ${product.old
+                            ? `
+                                                <span
+                                                    style="
+                                                        text-decoration:line-through;
+                                                        color:#999;
+                                                        font-weight:400;
+                                                        margin-left:6px;
+                                                    "
+                                                >
+                                                    ${money(product.old)}
+                                                </span>
+                                            `
+                            : ""
+                        }
+                                </div>
+
+                                <div class="seller-product-meta">
+                                    Rating:
+                                    ${escapeHTML(
+                            product.rating || "New"
+                        )}
+                                    • Stock:
+                                    ${Number(product.stock || 0)}
+                                </div>
+
+                                <div class="seller-product-desc">
+                                    ${escapeHTML(
+                            product.desc ||
+                            "No description added."
+                        )}
+                                </div>
+
+                                <div class="seller-product-actions">
+
+                                    <button
+                                        type="button"
+                                        class="edit-product-btn"
+                                        onclick="editSellerProduct('${product.id}')"
+                                    >
+                                        Edit
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="delete-product-btn"
+                                        onclick="deleteSellerProduct('${product.id}')"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+                    `)
+                    .join("");
+        }
+
+
+        function escapeHTML(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+
+        productForm.addEventListener(
+            "submit",
+            async function (e) {
+
+                e.preventDefault();
+
+                const editId = productEditId.value;
+                const name = productName.value.trim();
+                const cat = productCategory.value;
+                const price = Number(productPrice.value);
+                const old = Number(productOldPrice.value || 0);
+                const rating = Number(productRating.value || 0);
+                const stock = Number(productStock.value || 0);
+                const desc = productDescription.value.trim();
+                const isNew = productNewArrival.checked;
+
+                if (
+                    !name ||
+                    !cat ||
+                    !Number.isFinite(price) ||
+                    price < 0
+                ) {
+                    alert(
+                        "Please fill Product Name, Category and Selling Price."
+                    );
+                    return;
+                }
+
+                if (stock < 0) {
+                    alert("Stock cannot be negative.");
+                    return;
+                }
+
+                if (!editId && !productImage.files[0]) {
+                    alert("Please select a product image.");
+                    return;
+                }
+
+                productSaveBtn.disabled = true;
+                productSaveBtn.textContent =
+                    editId ? "Saving..." : "Adding...";
+
+                try {
+
+                    const existing =
+                        sellerProducts.find(
+                            product =>
+                                String(product.id) ===
+                                String(editId)
+                        );
+
+                    let image = existing?.img || "";
+
+                    if (productImage.files[0]) {
+                        image =
+                            await readProductImage(
+                                productImage.files[0]
+                            );
+                    }
+
+                    if (!image) {
+                        throw new Error(
+                            "Product image is required."
+                        );
+                    }
+
+                    const productData = {
+                        name: name,
+                        category: cat,
+                        price: price,
+                        oldPrice: old > 0 ? old : null,
+                        rating: rating,
+                        stock: stock,
+                        description: desc,
+                        image: image,
+                        isNew: isNew,
+                        isSellerProduct: true
+                    };
+
+                    let response;
+
+                    if (editId) {
+
+                        response = await fetch(
+                            `${PRODUCT_API_BASE_URL}/${editId}`,
+                            {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+                                body:
+                                    JSON.stringify(productData)
+                            }
+                        );
+
+                    } else {
+
+                        response = await fetch(
+                            PRODUCT_API_BASE_URL,
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+                                body:
+                                    JSON.stringify(productData)
+                            }
+                        );
+                    }
+
+                    const text =
+                        await response.text();
+
+                    let data = {};
+
+                    try {
+                        data =
+                            text
+                                ? JSON.parse(text)
+                                : {};
+                    } catch {
+                        data = {};
+                    }
+
+                    console.log(
+                        "PRODUCT SAVE STATUS:",
+                        response.status
+                    );
+
+                    console.log(
+                        "PRODUCT SAVE RESPONSE:",
+                        data
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            data.message ||
+                            text ||
+                            `Product API returned ${response.status}`
+                        );
+                    }
+
+                    await loadSellerProductsFromDatabase();
+
+                    resetProductForm();
+
+                    alert(
+                        editId
+                            ? "Product updated successfully."
+                            : "Product added successfully."
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "PRODUCT SAVE ERROR:",
+                        error
+                    );
+
+                    alert(
+                        error.message ||
+                        "Could not save product."
+                    );
+
+                } finally {
+
+                    productSaveBtn.disabled = false;
+                    productSaveBtn.textContent = "Add Product";
+
+                }
+            }
+        );
+
+
+        async function editSellerProduct(id) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${PRODUCT_API_BASE_URL}/${id}`,
+                        {
+                            method: "GET",
+                            cache: "no-store"
+                        }
+                    );
+
+                const text =
+                    await response.text();
+
+                let data = {};
+
+                try {
+                    data =
+                        text
+                            ? JSON.parse(text)
+                            : {};
+                } catch {
+                    data = {};
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        text ||
+                        `Product API returned ${response.status}`
+                    );
+                }
+
+                if (!data.success || !data.product) {
+                    throw new Error(
+                        data.message ||
+                        "Product could not be loaded."
+                    );
+                }
+
+                const product = data.product;
+
+                productEditId.value =
+                    product.id;
+
+                productName.value =
+                    product.name || "";
+
+                productCategory.value =
+                    product.category || "";
+
+                productPrice.value =
+                    product.price ?? "";
+
+                productOldPrice.value =
+                    product.oldPrice ?? "";
+
+                productRating.value =
+                    product.rating ?? "";
+
+                productStock.value =
+                    product.stock ?? 0;
+
+                productDescription.value =
+                    product.description || "";
+
+                productNewArrival.checked =
+                    !!product.isNew;
+
+                if (product.image) {
+
+                    productImagePreviewImg.src =
+                        product.image;
+
+                    productImagePreviewText.textContent =
+                        "Current image — choose a new image only if you want to replace it";
+
+                    productImagePreview.classList.add(
+                        "show"
+                    );
+
+                } else {
+
+                    productImagePreview.classList.remove(
+                        "show"
+                    );
+                }
+
+                productFormTitle.textContent =
+                    "Edit Product";
+
+                productSaveBtn.textContent =
+                    "Save Changes";
+
+                productCancelBtn.style.display =
+                    "inline-block";
+
+                productForm.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "EDIT PRODUCT ERROR:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Could not load product."
+                );
+            }
+        }
+
+
+        async function deleteSellerProduct(id) {
+
+            const product =
+                sellerProducts.find(
+                    item =>
+                        String(item.id) ===
+                        String(id)
+                );
+
+            if (!product) {
+                alert("Product not found.");
+                return;
+            }
+
+            if (!confirm(`Delete "${product.name}"?`)) {
+                return;
+            }
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${PRODUCT_API_BASE_URL}/${id}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+                const text =
+                    await response.text();
+
+                let data = {};
+
+                try {
+                    data =
+                        text
+                            ? JSON.parse(text)
+                            : {};
+                } catch {
+                    data = {};
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        text ||
+                        `Product API returned ${response.status}`
+                    );
+                }
+
+                await loadSellerProductsFromDatabase();
+
+                if (
+                    String(productEditId.value) ===
+                    String(id)
+                ) {
+                    resetProductForm();
+                }
+
+                alert(
+                    "Product deleted successfully."
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "DELETE PRODUCT ERROR:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Could not delete product."
+                );
+            }
+        }
+
+
+        productCancelBtn.addEventListener(
+            "click",
+            resetProductForm
+        );
+
+
+        loadSellerProductsFromDatabase();
+
+
+        setInterval(
+            loadSellerProductsFromDatabase,
+            30000
+        );
+
+
+
+        /* =========================
+           ELEMENTS
+        ========================= */
+
+        const searchInput =
+            document.getElementById("orderSearch");
+
+        const statusFilter =
+            document.getElementById("statusFilter");
+
+        const resetFilters =
+            document.getElementById("resetFilters");
+
+        const table =
+            document.getElementById("table");
+
+        const totalOrders =
+            document.getElementById("n");
+
+        const pendingOrders =
+            document.getElementById("p");
+
+        const confirmedOrders =
+            document.getElementById("c");
+
+        const totalSales =
+            document.getElementById("s");
+
+        const shippedOrders =
+            document.getElementById("shippedOrders");
+
+        const deliveredOrders =
+            document.getElementById("deliveredOrders");
+
+        const cancelledOrders =
+            document.getElementById("cancelledOrders");
+
+
+        /* =========================
+           UPDATE STATS
+        ========================= */
+
+        function updateStats() {
+
+            totalOrders.textContent =
+                orders.length;
+
+
+            pendingOrders.textContent =
+                orders.filter(
+                    order => order.status === "Pending"
+                ).length;
+
+
+            confirmedOrders.textContent =
+                orders.filter(
+                    order => order.status === "Confirmed"
+                ).length;
+
+            shippedOrders.textContent =
+                orders.filter(
+                    order => order.status === "Shipped"
+                ).length;
+
+            deliveredOrders.textContent =
+                orders.filter(
+                    order => order.status === "Delivered"
+                ).length;
+
+            cancelledOrders.textContent =
+                orders.filter(
+                    order => order.status === "Cancelled"
+                ).length;
+
+
+            const sales =
+                orders
+                    .filter(
+                        order => order.status !== "Cancelled"
+                    )
+                    .reduce(
+                        (sum, order) =>
+                            sum + Number(order.total || 0),
+                        0
+                    );
+
+
+            totalSales.textContent =
+                money(sales);
+
+        }
+
+
+        /* =========================
+           RENDER ORDERS
+        ========================= */
+
+        function render() {
+
+            updateStats();
+
+
+            const searchText =
+                searchInput.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const selectedStatus =
+                statusFilter.value;
+
+
+            const filteredOrders =
+                orders.filter(order => {
+
+                    const searchData = `
+                        ${order.id || ""}
+                        ${order.customer?.name || ""}
+                        ${order.customer?.phone || ""}
+                        ${order.customer?.email || ""}
+                    `.toLowerCase();
+
+
+                    const matchesSearch =
+                        !searchText ||
+                        searchData.includes(searchText);
+
+
+                    const matchesStatus =
+                        selectedStatus === "All" ||
+                        order.status === selectedStatus;
+
+
+                    return matchesSearch &&
+                        matchesStatus;
+
+                });
+
+
+            /* =========================
+               NO ORDERS
+            ========================= */
+
+            if (!orders.length) {
+
+                table.innerHTML = `
+
+                    <div class="empty">
+
+                        📦
+
+                        <br><br>
+
+                        No orders yet.
+
+                        <br><br>
+
+                        Place an order from the store
+                        to see it here.
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            /* =========================
+               NO FILTER RESULT
+            ========================= */
+
+            if (!filteredOrders.length) {
+
+                table.innerHTML = `
+
+                    <div class="no-result">
+
+                        <div class="no-result-icon">
+                            🔍
+                        </div>
+
+                        <strong>
+                            No orders found
+                        </strong>
+
+                        <p>
+                            Try changing your search
+                            or status filter.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            /* =========================
+               TABLE
+            ========================= */
+
+            table.innerHTML = `
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    ORDER
+                                </th>
+
+                                <th>
+                                    CUSTOMER
+                                </th>
+
+                                <th>
+                                    ITEMS
+                                </th>
+
+                                <th>
+                                    AMOUNT
+                                </th>
+
+                                <th>
+                                    PAYMENT
+                                </th>
+
+                                <th>
+                                    STATUS
+                                </th>
+
+                                <th>
+                                    ACTION
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            ${filteredOrders.map(order => {
+
+                const itemCount =
+                    (order.items || [])
+                        .reduce(
+                            (sum, item) =>
+                                sum +
+                                Number(item.qty || 0),
+                            0
+                        );
+
+
+                return `
+
+                                    <tr>
+
+                                        <!-- ORDER -->
+
+                                        <td>
+
+                                            <strong>
+                                                #${order.id}
+                                            </strong>
+
+                                            <div class="date">
+
+                                                ${new Date(
+                    order.date
+                ).toLocaleDateString("en-IN")}
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <!-- CUSTOMER -->
+
+                                        <td>
+
+                                            <strong>
+                                                ${order.customer?.name || "N/A"}
+                                            </strong>
+
+                                            <div class="date">
+
+                                                ${order.customer?.phone || "N/A"}
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <!-- ITEMS -->
+
+                                        <td>
+
+                                            ${itemCount}
+                                            item(s)
+
+                                        </td>
+
+
+                                        <!-- AMOUNT -->
+
+                                        <td>
+
+                                            <strong>
+                                                ${money(order.total)}
+                                            </strong>
+
+                                        </td>
+
+
+                                        <!-- PAYMENT -->
+
+                                        <td>
+
+                                            ${order.payment || "N/A"}
+
+                                        </td>
+
+
+                                        <!-- STATUS -->
+
+                                        <td>
+
+                                            <select
+                                                onchange="status('${order.id}', this.value)"
+                                            >
+
+                                                <option
+                                                    value="Pending"
+                                                    ${order.status === "Pending" ? "selected" : ""}
+                                                >
+                                                    Pending
+                                                </option>
+
+                                                <option
+                                                    value="Confirmed"
+                                                    ${order.status === "Confirmed" ? "selected" : ""}
+                                                >
+                                                    Confirmed
+                                                </option>
+
+                                                <option
+                                                    value="Shipped"
+                                                    ${order.status === "Shipped" ? "selected" : ""}
+                                                >
+                                                    Shipped
+                                                </option>
+
+                                                <option
+                                                    value="Delivered"
+                                                    ${order.status === "Delivered" ? "selected" : ""}
+                                                >
+                                                    Delivered
+                                                </option>
+
+                                                <option
+                                                    value="Cancelled"
+                                                    ${order.status === "Cancelled" ? "selected" : ""}
+                                                >
+                                                    Cancelled
+                                                </option>
+
+                                            </select>
+
+                                        </td>
+
+
+                                        <!-- VIEW -->
+
+                                        <td>
+
+                                          <button
+    class="view"
+    onclick="view('${order.id}')"
+>
+    View
+</button>
+
+<button
+    class="delete-order-btn"
+    onclick="deleteOrder('${order.id}')"
+>
+    Delete
+</button>
+
+                                        </td>
+
+                                    </tr>
+
+                                `;
+
+            }).join("")}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================
+           CHANGE STATUS
+        ========================= */
+
+        async function status(id, value) {
+            const order = orders.find(
+                item => String(item.id) === String(id)
+            );
+
+            if (!order) {
+                return;
+            }
+
+            const oldStatus = order.status || "Pending";
+
+            if (oldStatus === value) {
+                return;
+            }
+
+            if (!confirm(
+                `Change order #${order.id} status from "${oldStatus}" to "${value}"?`
+            )) {
+                render();
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `${ORDER_API_BASE_URL}/${order.id}/status`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            status: value
+                        })
+                    }
+                );
+
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.message || "Could not update order status."
+                    );
+                }
+
+                order.status = data.order?.status || value;
+                order.updatedAt =
+                    data.order?.updatedAt || new Date().toISOString();
+
+                render();
+
+                // Get the latest server value after the update.
+                await loadOrdersFromDatabase();
+
+
+            } catch (error) {
+                console.error("Order status update error:", error);
+                alert(error.message || "Could not update order status.");
+                render();
+            }
+        }
+
+        /* =========================
+           DELETE ORDER
+        ========================= */
+
+        async function deleteOrder(id) {
+
+            const order = orders.find(
+                item => String(item.id) === String(id)
+            );
+
+            if (!order) {
+                alert("Order not found.");
+                return;
+            }
+
+            const confirmed = confirm(
+                `Are you sure you want to permanently delete Order #${order.id}?\n\nThis action cannot be undone.`
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+
+                const response = await fetch(
+                    `${ORDER_API_BASE_URL}/${order.id}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+                const data = await response
+                    .json()
+                    .catch(() => ({}));
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.message || "Could not delete order."
+                    );
+                }
+
+                // Remove order from current list
+                orders = orders.filter(
+                    item => String(item.id) !== String(order.id)
+                );
+
+                alert(
+                    `Order #${order.id} deleted successfully.`
+                );
+
+                // Refresh table + stats
+                render();
+
+                // Load latest database data
+                await loadOrdersFromDatabase();
+
+            } catch (error) {
+
+                console.error(
+                    "Order delete error:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Could not delete order."
+                );
+            }
+        }
+        /* =========================
+           VIEW ORDER
+        ========================= */
+
+        function view(id) {
+
+            const order =
+                orders.find(
+                    item => String(item.id) === String(id)
+                );
+
+
+            if (!order) {
+
+                alert("Order not found");
+
+                return;
+
+            }
+
+
+            /* =========================
+               PRODUCTS
+            ========================= */
+
+            const itemsHTML =
+                (order.items || [])
+                    .map(item => `
+
+                        <div class="order-product">
+
+                            <img
+                                src="${item.img}"
+                                alt="${item.name}"
+                            >
+
+                            <div class="order-product-info">
+
+                                <h4>
+                                    ${item.name}
+                                </h4>
+
+                                <p>
+                                    Category:
+                                    ${item.cat || "N/A"}
+                                </p>
+
+                                <p>
+                                    Price:
+                                    ${money(item.price)}
+                                    × ${item.qty}
+                                </p>
+
+                            </div>
+
+                            <div class="product-price">
+
+                                ${money(
+                        Number(item.price || 0) *
+                        Number(item.qty || 0)
+                    )}
+
+                            </div>
+
+                        </div>
+
+                    `)
+                    .join("");
+
+
+            /* =========================
+               ORDER DETAILS
+            ========================= */
+
+            document.getElementById(
+                "orderDetails"
+            ).innerHTML = `
+
+                <p style="color:#777;margin-top:5px;">
+
+                    Order ID:
+
+                    <strong>
+                        ${order.id}
+                    </strong>
+
+                </p>
+
+
+                <div class="order-info">
+
+
+                    <div>
+
+                        <strong>
+                            Customer Name
+                        </strong>
+
+                        ${order.customer?.name || "N/A"}
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Mobile
+                        </strong>
+
+                        ${order.customer?.phone || "N/A"}
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Email
+                        </strong>
+
+                        ${order.customer?.email || "Not provided"}
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Payment
+                        </strong>
+
+                        ${order.payment || "N/A"}
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Address
+                        </strong>
+
+                        ${order.customer?.address || "N/A"}
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            City / State / Pincode
+                        </strong>
+
+                        ${order.customer?.city || ""}
+                        ,
+                        ${order.customer?.state || ""}
+                        -
+                        ${order.customer?.pincode || ""}
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Order Status
+                        </strong>
+
+                        <span class="status-badge">
+
+                            ${order.status || "Pending"}
+
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Order Date
+                        </strong>
+
+                        ${new Date(
+                order.date
+            ).toLocaleString("en-IN")}
+
+                    </div>
+
+
+                </div>
+
+
+                <h3 style="margin-top:25px;">
+                    Products
+                </h3>
+
+
+                ${itemsHTML}
+
+                <h3 style="margin-top:25px;">
+                    Order Status History
+                </h3>
+
+                <div style="
+                    background:#f8f6f2;
+                    border-radius:10px;
+                    padding:14px;
+                ">
+                    ${(order.statusHistory && order.statusHistory.length)
+                    ? order.statusHistory.slice().reverse().map(history => `
+                            <div style="
+                                display:flex;
+                                justify-content:space-between;
+                                gap:15px;
+                                padding:9px 0;
+                                border-bottom:1px solid #e8e2db;
+                            ">
+                                <strong>${history.status}</strong>
+                                <span style="color:#777;font-size:11px;">
+                                    ${new Date(history.date).toLocaleString("en-IN")}
+                                </span>
+                            </div>
+                        `).join("")
+                    : `
+                            <div style="color:#777;font-size:12px;">
+                                ${order.status || "Pending"}
+                            </div>
+                        `
+                }
+                </div>
+
+                <div class="order-total">
+
+                    <span>
+                        Total Amount
+                    </span>
+
+                    <span>
+                        ${money(order.total)}
+                    </span>
+
+                </div>
+
+            `;
+
+
+            document
+                .getElementById("orderModal")
+                .classList.add("show");
+
+        }
+
+
+        /* =========================
+           CLOSE MODAL
+        ========================= */
+
+        function closeOrderModal() {
+
+            document
+                .getElementById("orderModal")
+                .classList.remove("show");
+
+        }
+
+
+        /* =========================
+           OUTSIDE MODAL CLICK
+        ========================= */
+
+        document
+            .getElementById("orderModal")
+            .addEventListener(
+                "click",
+                function (e) {
+
+                    if (e.target === this) {
+
+                        closeOrderModal();
+
+                    }
+
+                }
+            );
+
+
+        /* =========================
+           CLEAR ORDERS
+        ========================= */
+
+
+        searchInput.addEventListener(
+            "input",
+            render
+        );
+
+
+        /* =========================
+           STATUS FILTER
+        ========================= */
+
+        statusFilter.addEventListener(
+            "change",
+            render
+        );
+
+
+        /* =========================
+           RESET FILTERS
+        ========================= */
+
+        resetFilters.addEventListener(
+            "click",
+            function () {
+
+                searchInput.value = "";
+
+                statusFilter.value = "All";
+
+                render();
+
+            }
+        );
+
+
+        /* =========================
+           INITIAL LOAD
+        ========================= */
+
+        loadOrdersFromDatabase();
+
+        // Refresh orders every 30 seconds so seller sees new customer orders.
+
+    </script>
+</body>
+
+</html>

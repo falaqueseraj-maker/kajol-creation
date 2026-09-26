@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Parda House - Seller Login</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f7f4ef;
+            padding: 20px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border: 1px solid #e6ddd4;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+        }
+
+        .logo {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 34px;
+            color: #29231f;
+            margin-bottom: 10px;
+        }
+
+        .sub {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #29231f;
+        }
+
+        .btn {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            background: #29231f;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #8b6045;
+        }
+
+        .btn:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .error {
+            background: #ffeaea;
+            color: #c70000;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .demo {
+            margin-top: 25px;
+            padding: 15px;
+            background: #f8f6f2;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #29231f;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="logo">
+            PARDA HOUSE
+        </div>
+
+        <div class="sub">
+            Seller Dashboard Login
+        </div>
+
+        <div class="error" id="errorBox">
+            Invalid Email or Password
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+
+            <input type="email" id="email" placeholder="Enter seller email" autocomplete="username">
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+
+            <input type="password" id="password" placeholder="Enter seller password" autocomplete="current-password">
+        </div>
+
+        <button class="btn" id="loginButton" onclick="loginSeller()">
+            Login
+        </button>
+
+
+
+    </div>
+
+
+    <script>
+
+        // ============================================
+        // SELLER API
+        // ============================================
+
+        const API_BASE_URL =
+            "https://localhost:57742/api";
+
+
+        // ============================================
+        // LOGIN
+        // ============================================
+
+        async function loginSeller() {
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value
+                    .trim();
+
+            const errorBox =
+                document.getElementById("errorBox");
+
+            const loginButton =
+                document.getElementById("loginButton");
+
+
+            // Hide old error
+            errorBox.style.display = "none";
+
+
+            // Validation
+            if (!email || !password) {
+
+                errorBox.textContent =
+                    "Please enter email and password.";
+
+                errorBox.style.display =
+                    "block";
+
+                return;
+            }
+
+
+            loginButton.disabled = true;
+            loginButton.textContent =
+                "Please wait...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE_URL}/Seller/login`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                email: email,
+                                password: password
+                            })
+                        }
+                    );
+
+
+                let data = null;
+
+                try {
+                    data = await response.json();
+                }
+                catch {
+                    data = null;
+                }
+
+
+                // ========================================
+                // LOGIN SUCCESS
+                // ========================================
+
+                if (
+                    response.ok &&
+                    data &&
+                    data.success
+                ) {
+
+                    localStorage.setItem("sellerLoggedIn", "true");
+                    localStorage.setItem("sellerEmail", data.seller.email);
+                    localStorage.setItem("sellerRole", data.seller.role);
+                    localStorage.setItem("sellerToken", data.token);
+
+                    window.location.href = "admin.html";
+
+                    return;
+                }
+
+
+                // ========================================
+                // LOGIN FAILED
+                // ========================================
+
+                errorBox.textContent =
+                    data?.message ||
+                    "Invalid seller email or password.";
+
+                errorBox.style.display =
+                    "block";
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Seller Login Error:",
+                    error
+                );
+
+                errorBox.textContent =
+                    "Unable to connect to the server. Please make sure the backend is running.";
+
+                errorBox.style.display =
+                    "block";
+            }
+            finally {
+
+                loginButton.disabled = false;
+
+                loginButton.textContent =
+                    "Login";
+            }
+        }
+
+
+        // ============================================
+        // ENTER KEY SUPPORT
+        // ============================================
+
+        document
+            .getElementById("password")
+            .addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (event.key === "Enter") {
+                        loginSeller();
+                    }
+
+                }
+            );
+
+
+        // ============================================
+        // ALREADY LOGGED-IN SELLER
+        // ============================================
+
+        if (
+            localStorage.getItem("sellerLoggedIn")
+            === "true"
+        ) {
+
+            window.location.replace(
+                "admin.html"
+            );
+        }
+
+    </script>
+
+</body>
+
+</html>
