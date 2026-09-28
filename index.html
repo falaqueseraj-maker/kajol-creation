@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kajol Creation — Home Furnishings</title>
+  <title>Parda House — Home Furnishings</title>
   <meta name="description"
-    content="Kajol Creation — curtains, bedsheets, comforters, blankets, doormats and beautiful home essentials.">
+    content="Parda House — curtains, bedsheets, comforters, blankets, doormats and beautiful home essentials.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap');
 
@@ -1557,9 +1557,14 @@
    ========================================= */
 
     /* =========================================
-   Kajol Creation CURTAIN BANNER
+   PARDA HOUSE CURTAIN BANNER
    FINAL CLEAN VERSION
 ========================================= */
+
+    /* Keep #best visible below the sticky header when links scroll here. */
+    #best {
+      scroll-margin-top: 90px;
+    }
 
     .ph-curtain-banner {
       position: relative;
@@ -2415,7 +2420,7 @@
     }
 
     /* =========================================================
-   Kajol Creation - PREMIUM MY ORDERS DESIGN
+   PARDA HOUSE - PREMIUM MY ORDERS DESIGN
    ========================================================= */
 
     #ordersModal .modal-card {
@@ -3117,216 +3122,6 @@
     }
   </style>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-  <!-- ==========================================================
-       BACKEND URL  (sirf yahi ek line badalni hai)
-       Local testing : https://localhost:57742
-       Live website  : apne deployed backend ka URL, jaise https://api.pardahouse.com
-       (bina last me "/" ke)
-       ========================================================== -->
-  <script>
-    window.PARDA_API_ROOT = "https://localhost:57742";
-  </script>
-  <style id="ph-slider-css">
-    /* ===== Auto-sliding category banner ===== */
-    .ph-slider {
-      position: relative;
-      width: 100%;
-      height: 460px;
-      border-radius: 6px;
-      overflow: hidden;
-      background: #f2e9de;
-      isolation: isolate;
-      touch-action: pan-y;
-    }
-
-    .ph-slide {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      background: var(--tint, #f2e9de);
-      transform: translateX(100%);
-      visibility: hidden;
-      will-change: transform;
-    }
-
-    .ph-slide.active,
-    .ph-slide.leaving {
-      visibility: visible;
-      transition: transform .75s cubic-bezier(.65, 0, .35, 1);
-    }
-
-    .ph-slide.active { transform: translateX(0); }
-    .ph-slide.leaving { transform: translateX(-100%); }
-    .ph-slide.leaving.rev { transform: translateX(100%); }
-
-    .ph-slide-img {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 56%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-      object-position: center;
-      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 34%);
-      mask-image: linear-gradient(90deg, transparent 0, #000 34%);
-    }
-
-    .ph-slide-content {
-      position: relative;
-      z-index: 2;
-      width: 48%;
-      padding-left: 6%;
-    }
-
-    .ph-slide-cat {
-      margin-bottom: 14px;
-      color: var(--accent);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    .ph-slide-content h2 {
-      margin: 0 0 16px;
-      color: #3f2d22;
-      font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(32px, 3.6vw, 50px);
-      font-weight: 500;
-      line-height: 1.1;
-      letter-spacing: -1px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .ph-slide-price {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 24px;
-      color: #3f2d22;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .ph-slide-price .old {
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 400;
-      text-decoration: line-through;
-    }
-
-    .ph-slide-price .off {
-      padding: 3px 8px;
-      border-radius: 3px;
-      background: rgba(47, 125, 79, .12);
-      color: #2f7d4f;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .06em;
-    }
-
-    .ph-slide-btns {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .ph-slide-btn {
-      padding: 13px 24px;
-      border: 1px solid #8b6045;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      transition: background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
-    }
-
-    .ph-slide-btn.primary { background: #8b6045; color: #fff; }
-    .ph-slide-btn.primary:hover {
-      background: #62402e;
-      border-color: #62402e;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(98, 64, 46, .18);
-    }
-
-    .ph-slide-btn.ghost { background: transparent; color: #62402e; }
-    .ph-slide-btn.ghost:hover { background: rgba(139, 96, 69, .10); }
-
-    .ph-slider-arrow {
-      position: absolute;
-      top: 50%;
-      z-index: 5;
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      transform: translateY(-50%);
-      border-radius: 50%;
-      background: rgba(255, 253, 249, .92);
-      color: #3f2d22;
-      font-size: 24px;
-      line-height: 1;
-      box-shadow: 0 6px 18px rgba(47, 35, 26, .15);
-      transition: background .2s ease;
-    }
-
-    .ph-slider-arrow:hover { background: #fff; }
-    .ph-slider-arrow.prev { left: 14px; }
-    .ph-slider-arrow.next { right: 14px; }
-
-    .ph-slider-dots {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 16px;
-      z-index: 5;
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .ph-slider-dot {
-      width: 8px;
-      height: 8px;
-      padding: 0;
-      border-radius: 8px;
-      background: rgba(62, 45, 34, .28);
-      transition: width .3s ease, background .3s ease;
-    }
-
-    .ph-slider-dot.active { width: 26px; background: #8b6045; }
-
-    @media (max-width: 768px) {
-      .ph-slider { height: 540px; }
-      .ph-slide { align-items: flex-end; }
-
-      .ph-slide-img {
-        width: 100%;
-        height: 60%;
-        -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
-        mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
-      }
-
-      .ph-slide-content { width: 100%; padding: 0 20px 48px; }
-      .ph-slide-cat { margin-bottom: 8px; font-size: 9px; letter-spacing: 2.4px; }
-      .ph-slide-content h2 { margin-bottom: 10px; font-size: 28px; }
-      .ph-slide-price { margin-bottom: 16px; font-size: 18px; }
-      .ph-slide-btn { padding: 11px 18px; font-size: 11px; }
-      .ph-slider-arrow { display: none; }
-      .ph-slider-dots { bottom: 18px; }
-    }
-
-    @media (max-width: 420px) {
-      .ph-slider { height: 520px; }
-      .ph-slide-content h2 { font-size: 25px; }
-    }
-  </style>
 </head>
 
 <body>
@@ -3337,8 +3132,8 @@
     <div class="container nav">
       <button class="iconbtn menu" id="menuBtn" aria-label="Open menu">☰</button>
 
-      <a class="logo" href="#home" aria-label="Kajol Creation home">
-        <b>Kajol Creation</b>
+      <a class="logo" href="#home" aria-label="Parda House home">
+        <b>PARDA HOUSE</b>
         <span>HOME • LIVING</span>
       </a>
 
@@ -3384,7 +3179,7 @@
     <a href="#categories">Shop Categories</a>
     <a href="#best">Best Sellers</a>
     <a href="#new">New Arrivals</a>
-    <a href="#about">About Kajol Creation</a>
+    <a href="#about">About Parda House</a>
   </div>
 
   <main id="home">
@@ -3511,7 +3306,11 @@
       </div>
     </section>
 
-    <!-- BEST SELLERS / SHOP PRODUCTS -->
+    <!-- ================================
+         BEST SELLERS / SHOP PRODUCTS
+         IMPORTANT: #best is the target of
+         category and banner links.
+    ================================= -->
     <section class="section" id="best" style="background:#faf7f2">
       <div class="container">
         <div class="section-head">
@@ -3519,8 +3318,12 @@
             <div class="kicker">Customer favourites</div>
             <h2>Best Sellers</h2>
           </div>
-          <a href="#best" class="text-link" id="clearFilter">View All →</a>
+
+          <a href="#best" class="text-link" id="clearFilter">
+            View All →
+          </a>
         </div>
+
         <div class="products" id="productGrid"></div>
       </div>
     </section>
@@ -3572,26 +3375,14 @@
       </div>
     </section>
 
-    <!-- AUTO-SLIDING CATEGORY BANNER (first product of every category, changes every 3 sec) -->
-    <section class="section ph-slider-section" id="phSliderSection" style="display:none">
-      <div class="container">
-        <div class="ph-slider" id="phSlider" role="region" aria-roledescription="carousel" aria-label="Featured products by category">
-          <div class="ph-slides"></div>
-          <button type="button" class="ph-slider-arrow prev" aria-label="Previous banner">‹</button>
-          <button type="button" class="ph-slider-arrow next" aria-label="Next banner">›</button>
-          <div class="ph-slider-dots"></div>
-        </div>
-      </div>
-    </section>
-
     <!-- ================================
      LUXURY HOME / ABOUT SECTION
 ================================= -->
     <!-- ================================
-     Kajol Creation — LUXURY HOME EDIT
+     PARDA HOUSE — LUXURY HOME EDIT
 ================================ -->
     <!-- =========================================
-     Kajol Creation ABOUT SECTION
+     PARDA HOUSE ABOUT SECTION
 ========================================= -->
 
     <section class="section ph-about" id="about">
@@ -3600,10 +3391,10 @@
         <!-- LEFT : ROOM IMAGE -->
         <div class="ph-about-image">
 
-          <img src="luxury-home.png" alt="Luxury Kajol Creation bedroom with premium bedding and curtains">
+          <img src="luxury-home.png" alt="Luxury Parda House bedroom with premium bedding and curtains">
 
           <div class="ph-image-label">
-            <span>Kajol Creation</span>
+            <span>PARDA HOUSE</span>
             <i>•</i>
             <span>HOME LIVING</span>
           </div>
@@ -3616,7 +3407,7 @@
 
           <!-- Kicker -->
           <div class="ph-about-kicker">
-            <span>THE Kajol Creation EDIT</span>
+            <span>THE PARDA HOUSE EDIT</span>
             <div></div>
           </div>
 
@@ -3631,7 +3422,7 @@
           <!-- Intro -->
           <p class="ph-about-intro">
             Your home deserves more than ordinary essentials. At
-            <strong>Kajol Creation</strong>, we bring together beautiful
+            <strong>Parda House</strong>, we bring together beautiful
             textiles and thoughtful designs that add comfort, warmth
             and character to your everyday spaces.
           </p>
@@ -4399,12 +4190,12 @@
 
     <script>
       /* =========================================
-         Kajol Creation NEWSLETTER
+         PARDA HOUSE NEWSLETTER
          DATABASE VERSION
       ========================================= */
 
       const NEWSLETTER_API =
-        window.PARDA_API_ROOT + "/api/Newsletter";
+        "https://localhost:57742/api/Newsletter";
 
 
       const newsletterForm =
@@ -4686,7 +4477,7 @@
         <!-- Brand -->
         <div class="footer-brand">
           <a class="logo" href="#home" style="text-align:left">
-            <b>Kajol Creation</b>
+            <b>PARDA HOUSE</b>
             <span>HOME • LIVING</span>
           </a>
 
@@ -4754,7 +4545,7 @@
       <!-- Copyright -->
       <div class="copyright">
         <span>
-          © <span id="year"></span> Kajol Creation. All rights reserved.
+          © <span id="year"></span> Parda House. All rights reserved.
         </span>
 
         <span>Made for beautiful homes.</span>
@@ -4771,7 +4562,7 @@
         ×
       </button>
 
-      <h2 id="footerInfoTitle">Kajol Creation</h2>
+      <h2 id="footerInfoTitle">Parda House</h2>
 
       <div id="footerInfoContent"></div>
 
@@ -4989,7 +4780,7 @@
           "Shipping Information",
           `
           <p>
-            We carefully pack every Kajol Creation order before dispatch.
+            We carefully pack every Parda House order before dispatch.
           </p>
 
           <p>
@@ -5026,7 +4817,7 @@
           `
           <p>
             If you receive a damaged or incorrect product, please
-            contact Kajol Creation as soon as possible.
+            contact Parda House as soon as possible.
           </p>
 
           <p>
@@ -5108,7 +4899,7 @@
           "Privacy Policy",
           `
           <p>
-            Kajol Creation respects your privacy and uses customer
+            Parda House respects your privacy and uses customer
             information to process orders, provide services and
             improve the shopping experience.
           </p>
@@ -5147,7 +4938,7 @@
           "Terms & Conditions",
           `
           <p>
-            By using Kajol Creation, you agree to provide accurate
+            By using Parda House, you agree to provide accurate
             information while creating an account and placing orders.
           </p>
 
@@ -5203,7 +4994,7 @@
 
         // Agar contact section nahi hai to modal
         openFooterInfo(
-          "Contact Kajol Creation - 9415091071 , 7275651061",
+          "Contact Parda House - 9415091071 , 7275651061",
           `
           <p>
             Have a question about an order or product?
@@ -5590,7 +5381,7 @@
       - products = all Best Seller/Shop products shown in the main grid
       - newProducts = built-in New Arrivals + seller products marked as New
     */
-    const PRODUCT_API_BASE_URL = window.PARDA_API_ROOT + "/api/Product";
+    const PRODUCT_API_BASE_URL = "https://localhost:57742/api/Product";
 
     let sellerProducts = [];
 
@@ -5874,7 +5665,7 @@
 
         const data = await response.json();
 
-        // Support the API response formats used by the Kajol Creation backend.
+        // Support the API response formats used by the Parda House backend.
         const rawProducts = Array.isArray(data)
           ? data
           : Array.isArray(data.products)
@@ -5900,7 +5691,7 @@
         updateCounts();
 
         console.log(
-          "Kajol Creation seller products loaded:",
+          "Parda House seller products loaded:",
           sellerProducts.length
         );
       } catch (error) {
@@ -6336,29 +6127,51 @@
     document.querySelectorAll("[data-filter]").forEach(a => a.addEventListener("click", e => {
       currentFilter = a.dataset.filter || "All"; renderProducts();
     }));
+    /* =========================================
+       BANNER / ABOUT -> BEST SELLERS
+       Filter apply hoga + #best par scroll hoga.
+    ========================================= */
     document.querySelectorAll("[data-banner-filter]").forEach(a => {
-      a.addEventListener("click", function () {
+      a.addEventListener("click", function (e) {
 
-        const filter = this.dataset.bannerFilter;
+        e.preventDefault();
 
-        currentFilter = filter;
+        currentFilter = this.dataset.bannerFilter || "All";
         renderProducts();
 
-        setTimeout(() => {
-          const bestSection = document.getElementById("best");
+        const bestSection = document.getElementById("best");
 
-          if (bestSection) {
+        if (bestSection) {
+          setTimeout(() => {
             bestSection.scrollIntoView({
               behavior: "smooth",
               block: "start"
             });
-          }
-        }, 100);
-
+          }, 50);
+        }
       });
     });
 
-    document.getElementById("clearFilter").addEventListener("click", () => { currentFilter = "All"; renderProducts() });
+    /* View All -> remove filter and stay on Best Sellers */
+    const clearFilterButton = document.getElementById("clearFilter");
+
+    if (clearFilterButton) {
+      clearFilterButton.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        currentFilter = "All";
+        renderProducts();
+
+        const bestSection = document.getElementById("best");
+
+        if (bestSection) {
+          bestSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+        }
+      });
+    }
     document.getElementById("cartBtn").addEventListener("click", openCart);
     document.getElementById("closeCart").addEventListener("click", closeCart);
     document.getElementById("overlay").addEventListener("click", closeCart);
@@ -6399,7 +6212,7 @@
        =============================== */
 
     const NOTIFICATION_API_BASE_URL =
-      window.PARDA_API_ROOT + "/api/Notification";
+      "https://localhost:57742/api/Notification";
 
     let customerNotifications = [];
     let customerNotificationsLoading = false;
@@ -7171,7 +6984,7 @@
        ONLINE -> save ONLY after payment verification
        =============================== */
 
-    const PAYMENT_API_BASE_URL = window.PARDA_API_ROOT;
+    const PAYMENT_API_BASE_URL = "https://localhost:57742";
     const ORDER_API_BASE_URL = PAYMENT_API_BASE_URL + "/api/Order";
     let onlinePaymentInProgress = false;
 
@@ -7199,10 +7012,7 @@
         throw new Error("Please login before placing an order.");
       }
 
-      // extra.cartItems = saved cart (used when an already-paid order is re-saved later)
-      const orderItems = extra.cartItems || cart;
-
-      const subTotal = orderItems.reduce(
+      const subTotal = cart.reduce(
         (sum, item) => sum + Number(item.price) * Number(item.qty),
         0
       );
@@ -7225,7 +7035,7 @@
         city: customerInfo.data.city,
         state: customerInfo.data.state,
         pincode: customerInfo.data.pincode,
-        items: orderItems.map(item => ({
+        items: cart.map(item => ({
           productId: Number(item.id),
           productName: item.name,
           productImage: item.img || null,
@@ -7356,8 +7166,8 @@
           key: razorpayOrder.keyId,
           amount: razorpayOrder.amount,
           currency: razorpayOrder.currency,
-          name: "Kajol Creation",
-          description: "Kajol Creation Order",
+          name: "Parda House",
+          description: "Parda House Order",
           order_id: razorpayOrder.orderId,
 
           prefill: {
@@ -7373,7 +7183,6 @@
           },
 
           modal: {
-            confirm_close: true,
             ondismiss: function () {
               rejectOnce(new Error("Payment window was closed."));
             }
@@ -7383,17 +7192,13 @@
         try {
           const rzp = new Razorpay(options);
 
-          /*
-            Payment fail hone par popup band nahi karte.
-            Customer usi popup me dobara try kar sakta hai (dusra card/UPI).
-            Agar yahan reject kar dete, to retry me paisa kat jaata
-            lekin order save nahi hota.
-          */
           rzp.on("payment.failed", function (response) {
-            console.warn("Razorpay payment attempt failed:", response?.error);
-            toast(
-              (response?.error?.description || "Payment failed.") +
-              " You can try again."
+            rejectOnce(
+              new Error(
+                response?.error?.description ||
+                response?.error?.reason ||
+                "Payment failed."
+              )
             );
           });
 
@@ -7402,84 +7207,6 @@
           rejectOnce(error);
         }
       });
-    }
-
-    /* ===============================
-       PAID ORDER SAFETY
-       Agar paisa kat gaya lekin internet/server ki wajah se order save nahi hua,
-       to order browser me save rehta hai aur next visit par apne aap save ho jaata hai.
-       =============================== */
-    const PENDING_PAID_KEY = "pardaPendingPaidOrder";
-    const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-    function readPendingPaidOrder() {
-      try { return JSON.parse(localStorage.getItem(PENDING_PAID_KEY) || "null"); }
-      catch { return null; }
-    }
-    function writePendingPaidOrder(record) {
-      try { localStorage.setItem(PENDING_PAID_KEY, JSON.stringify(record)); } catch { }
-    }
-    function clearPendingPaidOrder() {
-      try { localStorage.removeItem(PENDING_PAID_KEY); } catch { }
-    }
-
-    // Sirf network failure par retry karte hain (server ne reject kiya ho to retry nahi)
-    async function saveOrderWithRetry(customerInfo, extra, tries = 3) {
-      let lastError;
-      for (let i = 0; i < tries; i++) {
-        try {
-          return await createDatabaseOrder(customerInfo, "Online Payment", "Paid", extra);
-        } catch (error) {
-          lastError = error;
-          if (!(error instanceof TypeError) || i === tries - 1) break;
-          await wait(1500 * (i + 1));
-        }
-      }
-      throw lastError;
-    }
-
-    async function recoverPendingPaidOrder() {
-      const pending = readPendingPaidOrder();
-      if (!pending || !pending.razorpay || !pending.customerInfo) return;
-
-      const current = JSON.parse(localStorage.getItem("currentCustomer") || "null");
-      const owner = pending.customerInfo.currentCustomer;
-      if (!current || !owner || String(current.id) !== String(owner.id)) return;
-
-      if ((pending.attempts || 0) >= 5) return;
-      pending.attempts = (pending.attempts || 0) + 1;
-      writePendingPaidOrder(pending);
-
-      try {
-        if (!pending.verified) {
-          await verifyRazorpayPayment({
-            razorpay_order_id: pending.razorpay.razorpayOrderId,
-            razorpay_payment_id: pending.razorpay.razorpayPaymentId,
-            razorpay_signature: pending.razorpay.razorpaySignature
-          });
-          pending.verified = true;
-          writePendingPaidOrder(pending);
-        }
-
-        await createDatabaseOrder(
-          pending.customerInfo,
-          "Online Payment",
-          "Paid",
-          { ...pending.razorpay, cartItems: pending.cartItems }
-        );
-
-        clearPendingPaidOrder();
-        toast("Your paid order has been saved. Thank you!");
-      } catch (error) {
-        console.error("Pending paid order recovery failed:", error);
-      }
-    }
-
-    function friendlyPaymentError(error) {
-      if (error instanceof TypeError) {
-        return "Could not connect to the payment server. Please try again in a moment.";
-      }
-      return error?.message || "Online payment could not be completed.";
     }
 
     document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
@@ -7563,9 +7290,6 @@
         submitButton.style.opacity = "0.65";
       }
 
-      // paymentResponse tabhi set hota hai jab Razorpay ne payment success bataya (paisa kat chuka hai)
-      let paymentResponse = null;
-
       try {
         const razorpayOrder = await createRazorpayOrder(total, customerInfo);
 
@@ -7573,7 +7297,7 @@
           submitButton.textContent = "Complete Payment...";
         }
 
-        paymentResponse = await openRazorpayCheckout(
+        const paymentResponse = await openRazorpayCheckout(
           razorpayOrder,
           customerInfo
         );
@@ -7586,71 +7310,38 @@
           throw new Error("Razorpay did not return complete payment details.");
         }
 
-        const razorpayIds = {
-          razorpayOrderId: paymentResponse.razorpay_order_id,
-          razorpayPaymentId: paymentResponse.razorpay_payment_id,
-          razorpaySignature: paymentResponse.razorpay_signature
-        };
-        const cartSnapshot = cart.map(item => ({ ...item }));
-
-        // Payment ho chuka hai: pehle backup save karo, phir verify + order save
-        const pending = {
-          customerInfo,
-          cartItems: cartSnapshot,
-          razorpay: razorpayIds,
-          verified: false,
-          attempts: 0,
-          savedAt: Date.now()
-        };
-        writePendingPaidOrder(pending);
-
         if (submitButton) {
           submitButton.textContent = "Verifying Payment...";
         }
 
         await verifyRazorpayPayment(paymentResponse);
 
-        pending.verified = true;
-        writePendingPaidOrder(pending);
-
         if (submitButton) {
           submitButton.textContent = "Saving Order...";
         }
 
-        await saveOrderWithRetry(
+        await createDatabaseOrder(
           customerInfo,
-          { ...razorpayIds, cartItems: cartSnapshot }
+          "Online Payment",
+          "Paid",
+          {
+            razorpayOrderId: paymentResponse.razorpay_order_id,
+            razorpayPaymentId: paymentResponse.razorpay_payment_id,
+            razorpaySignature: paymentResponse.razorpay_signature
+          }
         );
 
-        clearPendingPaidOrder();
         finishSuccessfulOrder("Payment successful! Order placed.");
 
       } catch (error) {
         console.error("Razorpay checkout error:", error);
 
-        if (paymentResponse && paymentResponse.razorpay_payment_id) {
-          /*
-            Paisa kat chuka hai lekin order confirm/save nahi ho paya.
-            Cart clear karte hain taaki customer dobara payment na kare;
-            order backup se apne aap dobara save hoga.
-          */
-          finishSuccessfulOrder("Payment received. We are confirming your order.");
-          alert(
-            "Your payment was received (Payment ID: " +
-            paymentResponse.razorpay_payment_id +
-            ") but we could not finish confirming your order right now.\n\n" +
-            "Please do NOT pay again. Your order will be saved automatically " +
-            "when you open this website again. If it does not appear in " +
-            "My Orders, contact us with this Payment ID."
-          );
-        } else {
-          const message = friendlyPaymentError(error);
+        const message = error?.message || "Online payment could not be completed.";
 
-          if (message === "Payment window was closed.") {
-            toast("Payment cancelled. Your order was NOT saved.");
-          } else {
-            toast(message + " Your order was NOT saved.");
-          }
+        if (message === "Payment window was closed.") {
+          toast("Payment cancelled. Your order was NOT saved.");
+        } else {
+          toast(message + " Your order was NOT saved.");
         }
 
       } finally {
@@ -7665,9 +7356,6 @@
     });
 
     renderProducts(); renderNew(); updateCounts(); renderCart();
-
-    // Pehle ka paid-but-unsaved order (agar ho) dobara save karo
-    setTimeout(recoverPendingPaidOrder, 2000);
     refreshCustomerNotifications();
     /* ===============================
        CUSTOMER ACCOUNT / LOGIN FLOW
@@ -7688,11 +7376,11 @@
     */
 
     const CUSTOMER_API =
-      window.PARDA_API_ROOT + "/api/Customer";
+      (window.PARDA_API_ROOT || "https://kajolcreation-payment-api.onrender.com") +
+      "/api/Customer";
 
-    async function getLoggedInCustomer() {
+    function getLoggedInCustomer() {
       try {
-
         const loggedIn =
           localStorage.getItem("customerLoggedIn") === "true";
 
@@ -7703,62 +7391,25 @@
           return null;
         }
 
-        const localCustomer =
-          JSON.parse(rawCustomer);
+        const customer = JSON.parse(rawCustomer);
 
-        if (
-          !localCustomer ||
-          !localCustomer.id
-        ) {
+        if (!customer || !customer.id) {
           localStorage.removeItem("customerLoggedIn");
           localStorage.removeItem("currentCustomer");
-
           return null;
         }
 
-        /* GET LATEST CUSTOMER FROM DATABASE */
-
-        const response = await fetch(
-          `${CUSTOMER_API}/${localCustomer.id}`
-        );
-
-        if (!response.ok) {
-
-          if (response.status === 404) {
-            localStorage.removeItem("customerLoggedIn");
-            localStorage.removeItem("currentCustomer");
-          }
-
-          return null;
-        }
-
-        const data = await response.json();
-
-        if (
-          !data.success ||
-          !data.customer
-        ) {
-          return null;
-        }
-
-        const customer = data.customer;
-
-        /* KEEP LOCAL COPY UPDATED */
-
-        localStorage.setItem(
-          "currentCustomer",
-          JSON.stringify(customer)
-        );
-
+        /*
+          The login API has already returned the verified customer data.
+          Use that local session directly for the profile.
+          Do NOT call the customer GET API here, because a temporary
+          network/CORS/server issue should not force a logged-in customer
+          back to the login page.
+        */
         return customer;
 
       } catch (error) {
-
-        console.error(
-          "Could not load customer:",
-          error
-        );
-
+        console.error("Could not read logged-in customer:", error);
         return null;
       }
     }
@@ -7797,7 +7448,7 @@
       }
     }
     /* =========================================================
-       Kajol Creation - MY ORDERS
+       PARDA HOUSE - MY ORDERS
        ========================================================= */
 
     async function openOrders() {
@@ -8610,7 +8261,7 @@
 
     }
 
-    async function handleAccountClick(event) {
+    function handleAccountClick(event) {
 
       if (event) {
         event.preventDefault();
@@ -9062,1153 +8713,6 @@
     }
   </script>
   <a href="seller-login.html">Seller Dashboard</a>
-
-<style>
-
-/* =========================================================
-   Kajol Creation — MOBILE/TABLET POLISH
-   ONLY @media rules below. Desktop styles are untouched.
-========================================================= */
-
-#best { scroll-margin-top: 76px; }
-
-@media (max-width: 900px) {
-
-  .container {
-    width: calc(100% - 32px);
-    max-width: 1180px;
-  }
-
-  /* Header */
-  .navlinks {
-    display: none !important;
-  }
-
-  .menu {
-    display: grid !important;
-  }
-
-  .trust-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .trust-item:nth-child(2) {
-    border-right: 0;
-  }
-
-  .categories {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .products {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .split {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .split-copy {
-    order: 2;
-  }
-
-  .split-img {
-    order: 1;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  /* Curtain banner — tablet */
-  .ph-curtain-banner {
-    height: 460px;
-  }
-
-  .ph-curtain-banner-content {
-    width: 58%;
-    padding-left: 5%;
-  }
-
-  .ph-curtain-banner-content h2 {
-    font-size: 44px;
-  }
-
-  /* About */
-  .ph-about-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .ph-about-image {
-    height: 480px;
-  }
-}
-
-@media (max-width: 600px) {
-
-  body {
-    overflow-x: hidden;
-  }
-
-  .container {
-    width: calc(100% - 24px);
-  }
-
-  /* ---------- TOP BAR ---------- */
-  .topbar {
-    height: auto;
-    min-height: 30px;
-    padding: 8px 12px;
-    font-size: 8px;
-    line-height: 1.35;
-    text-align: center;
-  }
-
-  /* ---------- NAV ---------- */
-  .nav {
-    height: 64px;
-    padding: 0;
-  }
-
-  .nav .container {
-    height: 64px;
-    width: calc(100% - 24px);
-    gap: 10px;
-  }
-
-  .logo b {
-    font-size: 21px;
-    letter-spacing: 1px;
-  }
-
-  .nav-actions {
-    gap: 7px;
-    margin-left: auto;
-  }
-
-  .nav-actions .icon-btn {
-    width: 34px;
-    height: 34px;
-  }
-
-  .nav-actions .icon-btn span {
-    font-size: 16px;
-  }
-
-  .menu {
-    width: 34px;
-    height: 34px;
-  }
-
-  /* ---------- MOBILE MENU ---------- */
-  .mobile-menu {
-    width: 100%;
-    max-width: 100%;
-    right: 0;
-    left: 0;
-  }
-
-  /* ---------- HERO ---------- */
-  .hero {
-    min-height: 510px;
-  }
-
-  .hero-content {
-    padding: 54px 0 42px;
-  }
-
-  .hero h1 {
-    max-width: 100%;
-    font-size: clamp(39px, 12vw, 54px);
-    line-height: 1.03;
-  }
-
-  .hero p {
-    max-width: 340px;
-    font-size: 13px;
-    line-height: 1.65;
-  }
-
-  .hero .actions {
-    flex-wrap: wrap;
-    gap: 9px;
-  }
-
-  .hero .actions .btn {
-    min-height: 43px;
-    padding: 11px 16px;
-  }
-
-  /* ---------- TRUST STRIP ---------- */
-  .trust-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .trust-item {
-    min-height: 76px;
-    padding: 14px 8px;
-  }
-
-  .trust-item:nth-child(3),
-  .trust-item:nth-child(4) {
-    border-top: 1px solid var(--line);
-  }
-
-  .trust-icon {
-    font-size: 17px;
-    margin-bottom: 5px;
-  }
-
-  .trust-item strong {
-    font-size: 10px;
-  }
-
-  .trust-item span {
-    font-size: 8px;
-  }
-
-  /* ---------- SECTIONS ---------- */
-  .section {
-    padding: 42px 0;
-  }
-
-  h2 {
-    font-size: 30px;
-    line-height: 1.12;
-  }
-
-  .section-head {
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 19px;
-  }
-
-  .section-head .text-link {
-    display: none;
-  }
-
-  /* ---------- CATEGORIES ---------- */
-  .categories {
-    gap: 10px;
-  }
-
-  .category {
-    min-width: 0;
-    min-height: 185px;
-  }
-
-  .category img {
-    height: 185px;
-  }
-
-  .category-info {
-    left: 12px;
-    bottom: 12px;
-    right: 10px;
-  }
-
-  .category-info h3 {
-    font-size: 18px;
-    line-height: 1.1;
-  }
-
-  .category-info span {
-    font-size: 9px;
-  }
-
-  /* ---------- BEST / PRODUCTS ---------- */
-  .products {
-    gap: 12px;
-  }
-
-  .product-card {
-    min-width: 0;
-  }
-
-  .product-card > img,
-  .product-card .product-image,
-  .product-image {
-    height: 210px;
-    object-fit: cover;
-  }
-
-  .product-info {
-    padding: 10px;
-  }
-
-  .product-name {
-    font-size: 12px;
-    line-height: 1.35;
-  }
-
-  .product-price {
-    font-size: 13px;
-  }
-
-  .quick {
-    display: none !important;
-  }
-
-  /* ---------- CURTAIN BANNER ---------- */
-  .ph-curtain-banner {
-    width: 100%;
-    height: 540px;
-    border-radius: 6px;
-  }
-
-  .ph-curtain-banner-image {
-    object-position: 68% center;
-  }
-
-  .ph-curtain-banner-overlay {
-    align-items: flex-end;
-    background: linear-gradient(
-      180deg,
-      rgba(247,243,237,0) 0%,
-      rgba(247,243,237,.04) 25%,
-      rgba(247,243,237,.55) 54%,
-      rgba(247,243,237,.96) 78%,
-      rgba(247,243,237,1) 100%
-    );
-  }
-
-  .ph-curtain-banner-content {
-    width: 100%;
-    padding: 0 20px 25px;
-  }
-
-  .ph-curtain-banner-content .eyebrow {
-    margin-bottom: 8px;
-    font-size: 8px;
-    letter-spacing: 2.3px;
-  }
-
-  .ph-curtain-banner-content h2 {
-    margin-bottom: 11px;
-    font-size: clamp(31px, 9.5vw, 41px);
-    line-height: 1.06;
-  }
-
-  .ph-curtain-banner-content p {
-    margin-bottom: 17px;
-    font-size: 12px;
-    line-height: 1.55;
-  }
-
-  .ph-curtain-btn {
-    min-height: 43px;
-    padding: 11px 18px;
-    font-size: 11px;
-  }
-
-  /* ---------- NEW ARRIVALS ---------- */
-  #new .products {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  /* ---------- ABOUT ---------- */
-  .ph-about {
-    padding: 42px 0;
-  }
-
-  .ph-about-grid {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-
-  .ph-about-image {
-    height: 370px;
-    border-radius: 7px;
-  }
-
-  .ph-image-label {
-    left: 11px;
-    bottom: 11px;
-    padding: 8px 11px;
-    font-size: 7.5px;
-    letter-spacing: 1.2px;
-  }
-
-  .ph-about-kicker {
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  .ph-about-kicker span {
-    font-size: 7.5px;
-    letter-spacing: 1.8px;
-  }
-
-  .ph-about-kicker div {
-    width: 40px;
-  }
-
-  .ph-about-content h2 {
-    margin-bottom: 14px;
-    font-size: clamp(31px, 9vw, 40px);
-  }
-
-  .ph-about-intro {
-    margin-bottom: 12px;
-    font-size: 12.5px;
-    line-height: 1.62;
-  }
-
-  .ph-about-description {
-    margin-bottom: 16px;
-    font-size: 12px;
-    line-height: 1.62;
-  }
-
-  .ph-about-features {
-    grid-template-columns: 1fr;
-    margin-bottom: 16px;
-  }
-
-  .ph-feature,
-  .ph-feature:nth-child(even) {
-    min-height: 67px;
-    padding: 9px 0;
-  }
-
-  .ph-feature:nth-child(odd) {
-    border-right: 0;
-  }
-
-  .ph-feature:nth-child(n+2) {
-    border-top: 1px solid rgba(98,64,46,.12);
-  }
-
-  .ph-feature-icon {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-  }
-
-  .ph-feature-icon svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  .ph-feature-text h3 {
-    font-size: 13px;
-  }
-
-  .ph-feature-text p {
-    font-size: 10.5px;
-    line-height: 1.4;
-  }
-
-  .ph-about-bottom {
-    font-size: 11.5px;
-    line-height: 1.6;
-    margin-bottom: 16px;
-  }
-
-  .ph-about-button {
-    min-height: 43px;
-    padding: 11px 17px;
-    font-size: 10.5px;
-  }
-
-  /* ---------- SPLIT SECTIONS ---------- */
-  .split-img {
-    min-height: 300px;
-  }
-
-  /* ---------- FOOTER ---------- */
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 24px 16px;
-  }
-
-  footer {
-    overflow: hidden;
-  }
-
-  /* ---------- CART / MODALS ---------- */
-  .drawer {
-    width: min(94vw, 390px);
-  }
-
-  .modal {
-    padding: 10px;
-  }
-
-  .modal-card {
-    width: 100%;
-    max-height: 92vh;
-    overflow-y: auto;
-  }
-
-  .detail {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .detail-info {
-    padding: 22px;
-  }
-
-  .detail-info h2 {
-    font-size: 30px;
-  }
-
-  .detail img {
-    max-height: 300px;
-    object-fit: cover;
-  }
-
-  /* ---------- FORM / CHECKOUT ---------- */
-  .checkout-grid,
-  .checkout-layout,
-  .form-grid,
-  .customer-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Don't allow long text/images to create horizontal scroll. */
-  input,
-  select,
-  textarea,
-  button {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 380px) {
-
-  .container {
-    width: calc(100% - 20px);
-  }
-
-  .logo b {
-    font-size: 19px;
-  }
-
-  .hero {
-    min-height: 485px;
-  }
-
-  .hero h1 {
-    font-size: 38px;
-  }
-
-  .products {
-    gap: 9px;
-  }
-
-  .product-card > img,
-  .product-card .product-image,
-  .product-image {
-    height: 175px;
-  }
-
-  .category img,
-  .category {
-    height: 155px;
-    min-height: 155px;
-  }
-
-  .category-info h3 {
-    font-size: 16px;
-  }
-
-  .ph-curtain-banner {
-    height: 500px;
-  }
-
-  .ph-curtain-banner-content {
-    padding-left: 17px;
-    padding-right: 17px;
-    padding-bottom: 21px;
-  }
-
-  .ph-curtain-banner-content h2 {
-    font-size: 30px;
-  }
-
-  .ph-about-image {
-    height: 330px;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-</style>
-
-
-<style>
-/* =========================================================
-   Kajol Creation — FINAL MOBILE OVERFLOW FIX
-   Desktop is NOT changed.
-========================================================= */
-
-@media (max-width: 600px) {
-
-  html,
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden !important;
-  }
-
-  /* -------------------------
-     MOBILE HEADER
-  ------------------------- */
-
-  header {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .nav {
-    width: calc(100% - 20px) !important;
-    max-width: 100% !important;
-    height: 62px !important;
-
-    display: grid !important;
-    grid-template-columns: 28px minmax(0, 1fr) auto !important;
-    align-items: center;
-    gap: 5px !important;
-
-    overflow: hidden;
-  }
-
-  .menu {
-    display: grid !important;
-    width: 28px !important;
-    min-width: 28px !important;
-    height: 28px !important;
-    padding: 0 !important;
-    font-size: 16px !important;
-    flex-shrink: 0 !important;
-  }
-
-  .logo {
-    min-width: 0 !important;
-    width: auto !important;
-    overflow: hidden;
-    align-items: center;
-  }
-
-  .logo b {
-    display: block;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 18px !important;
-    letter-spacing: .04em !important;
-  }
-
-  .logo span {
-    font-size: 6px !important;
-    letter-spacing: .20em !important;
-    margin-top: 4px !important;
-    white-space: nowrap;
-  }
-
-  /* IMPORTANT: actual class is .actions, not .nav-actions */
-  .actions {
-    display: flex !important;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 2px !important;
-    min-width: 0 !important;
-    flex-shrink: 0 !important;
-  }
-
-  .actions .iconbtn,
-  .actions .notification-btn {
-    width: 26px !important;
-    min-width: 26px !important;
-    height: 26px !important;
-    padding: 0 !important;
-    font-size: 15px !important;
-    flex-shrink: 0 !important;
-  }
-
-  .actions .notification-btn svg {
-    width: 15px !important;
-    height: 15px !important;
-  }
-
-  .actions .count,
-  .actions #pardaNotificationBadge {
-    width: 11px !important;
-    min-width: 11px !important;
-    height: 11px !important;
-    padding: 0 !important;
-    top: -1px !important;
-    right: -1px !important;
-    border-width: 1px !important;
-    font-size: 6px !important;
-    line-height: 10px !important;
-  }
-
-  /* -------------------------
-     HERO — NO HORIZONTAL CUT
-  ------------------------- */
-
-  .hero {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
-  }
-
-  .hero .container.hero-content {
-    width: calc(100% - 28px) !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    margin: 0 auto !important;
-    padding: 48px 0 40px !important;
-  }
-
-  .hero h1 {
-    max-width: 100% !important;
-    font-size: clamp(36px, 11vw, 48px) !important;
-    line-height: 1.04 !important;
-    letter-spacing: -.025em !important;
-    overflow-wrap: normal !important;
-    word-break: normal !important;
-  }
-
-  .hero p {
-    width: 100% !important;
-    max-width: 330px !important;
-    font-size: 12.5px !important;
-    line-height: 1.6 !important;
-  }
-
-  .hero-buttons {
-    width: 100%;
-    max-width: 100%;
-    gap: 8px !important;
-  }
-
-  .hero-buttons .btn {
-    max-width: 100%;
-    padding: 11px 14px !important;
-    font-size: 11px !important;
-    white-space: nowrap;
-  }
-
-  /* -------------------------
-     TRUST
-  ------------------------- */
-
-  .trust,
-  .trust-grid,
-  .trust-item {
-    min-width: 0 !important;
-    max-width: 100% !important;
-  }
-
-  .trust-item {
-    overflow: hidden;
-  }
-
-  .trust-item > div:last-child {
-    min-width: 0;
-  }
-
-  .trust-item b,
-  .trust-item span {
-    white-space: normal;
-  }
-
-  /* -------------------------
-     ALL MAIN CONTAINERS
-  ------------------------- */
-
-  main,
-  section,
-  .section,
-  .container {
-    max-width: 100%;
-    min-width: 0;
-  }
-
-  .section > .container {
-    width: calc(100% - 24px) !important;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* -------------------------
-     CATEGORY CARDS
-  ------------------------- */
-
-  .categories {
-    width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 9px !important;
-  }
-
-  .category {
-    min-width: 0 !important;
-    width: 100% !important;
-  }
-
-  /* -------------------------
-     PRODUCT CARDS
-  ------------------------- */
-
-  .products {
-    width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-  }
-
-  .product {
-    min-width: 0 !important;
-    width: 100% !important;
-  }
-
-  .product-image {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  /* -------------------------
-     CURTAIN BANNER
-  ------------------------- */
-
-  .ph-curtain-banner {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    height: 500px !important;
-    overflow: hidden !important;
-  }
-
-  .ph-curtain-banner-content {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    padding: 0 18px 23px !important;
-  }
-
-  .ph-curtain-banner-content h2 {
-    max-width: 100%;
-    font-size: clamp(29px, 9vw, 39px) !important;
-  }
-
-  .ph-curtain-banner-content p {
-    max-width: 100%;
-    font-size: 12px !important;
-  }
-
-  /* -------------------------
-     ABOUT
-  ------------------------- */
-
-  .ph-about-grid {
-    width: 100%;
-    min-width: 0 !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  .ph-about-image,
-  .ph-about-content {
-    width: 100%;
-    min-width: 0 !important;
-  }
-
-  .ph-about-content h2 {
-    max-width: 100%;
-    font-size: clamp(30px, 9vw, 39px) !important;
-  }
-
-  .ph-about-features {
-    width: 100%;
-    min-width: 0;
-  }
-
-  /* -------------------------
-     FOOTER / NEWSLETTER
-  ------------------------- */
-
-  .newsletter {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  .news-form {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .footer-grid {
-    width: 100%;
-    min-width: 0;
-  }
-}
-
-@media (max-width: 360px) {
-
-  .nav {
-    width: calc(100% - 12px) !important;
-    grid-template-columns: 26px minmax(0, 1fr) auto !important;
-    gap: 3px !important;
-  }
-
-  .menu {
-    width: 26px !important;
-    min-width: 26px !important;
-    height: 26px !important;
-    font-size: 15px !important;
-  }
-
-  .logo b {
-    font-size: 16px !important;
-  }
-
-  .logo span {
-    font-size: 5.5px !important;
-  }
-
-  .actions {
-    gap: 1px !important;
-  }
-
-  .actions .iconbtn,
-  .actions .notification-btn {
-    width: 24px !important;
-    min-width: 24px !important;
-    height: 24px !important;
-    font-size: 14px !important;
-  }
-
-  .actions .notification-btn svg {
-    width: 14px !important;
-    height: 14px !important;
-  }
-
-  .hero .container.hero-content {
-    width: calc(100% - 22px) !important;
-  }
-
-  .hero h1 {
-    font-size: 34px !important;
-  }
-
-  .hero-buttons .btn {
-    padding-left: 11px !important;
-    padding-right: 11px !important;
-    font-size: 10px !important;
-  }
-}
-</style>
-
-<script id="ph-slider-js">
-  /* Auto-sliding category banner: first product of every category, changes every 3 seconds */
-  (function () {
-    try {
-      var section = document.getElementById("phSliderSection");
-      var root = document.getElementById("phSlider");
-      if (!section || !root) return;
-
-      var track = root.querySelector(".ph-slides");
-      var dotsBox = root.querySelector(".ph-slider-dots");
-      var prevBtn = root.querySelector(".ph-slider-arrow.prev");
-      var nextBtn = root.querySelector(".ph-slider-arrow.next");
-
-      var DELAY = 3000, ANIM = 780, MAX = 8;
-      var tints = ["#f2e9de", "#e9e4dc", "#f0e6e0", "#e6ebe4", "#ece5ee", "#f1ece0", "#e4eaee", "#efe4e4"];
-      var slides = [], dots = [], cur = 0, timer = null, busy = false, sig = "";
-
-      function fmt(n) { return "\u20B9" + Number(n || 0).toLocaleString("en-IN"); }
-
-      function el(tag, cls, text) {
-        var e = document.createElement(tag);
-        if (cls) e.className = cls;
-        if (text != null) e.textContent = text;
-        return e;
-      }
-
-      /* first product of every category (prefers one that has an image) */
-      function pick() {
-        var list = (typeof products !== "undefined" && Array.isArray(products)) ? products : [];
-        var order = [], map = {};
-        list.forEach(function (p) {
-          if (!p || !p.cat) return;
-          if (!map[p.cat]) { map[p.cat] = { first: p, img: null }; order.push(p.cat); }
-          if (!map[p.cat].img && p.img) map[p.cat].img = p;
-        });
-        return order.map(function (c) { return map[c].img || map[c].first; }).slice(0, MAX);
-      }
-
-      function shopCategory(cat) {
-        try { currentFilter = cat; renderProducts(); } catch (e) { }
-        setTimeout(function () {
-          var best = document.getElementById("best");
-          if (best) best.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 100);
-      }
-
-      function makeSlide(p, i) {
-        var slide = el("div", "ph-slide");
-        slide.style.setProperty("--tint", tints[i % tints.length]);
-        slide.setAttribute("role", "group");
-        slide.setAttribute("aria-roledescription", "slide");
-
-        if (p.img) {
-          var img = el("img", "ph-slide-img");
-          img.src = p.img;
-          img.alt = p.name || p.cat;
-          img.loading = i === 0 ? "eager" : "lazy";
-          img.onerror = function () { img.style.display = "none"; };
-          slide.appendChild(img);
-        }
-
-        var box = el("div", "ph-slide-content");
-        box.appendChild(el("div", "ph-slide-cat", p.cat));
-        box.appendChild(el("h2", "", p.name || p.cat));
-
-        var price = el("div", "ph-slide-price");
-        price.appendChild(el("span", "", fmt(p.price)));
-        if (p.old && Number(p.old) > Number(p.price)) {
-          price.appendChild(el("span", "old", fmt(p.old)));
-          price.appendChild(el("span", "off", Math.round((1 - p.price / p.old) * 100) + "% OFF"));
-        }
-        box.appendChild(price);
-
-        var btns = el("div", "ph-slide-btns");
-        var shop = el("button", "ph-slide-btn primary", "Shop " + p.cat + " \u2192");
-        shop.type = "button";
-        shop.addEventListener("click", function () { shopCategory(p.cat); });
-        var view = el("button", "ph-slide-btn ghost", "View Product");
-        view.type = "button";
-        view.addEventListener("click", function () {
-          if (typeof openDetail === "function") openDetail(p.id);
-        });
-        btns.appendChild(shop);
-        btns.appendChild(view);
-        box.appendChild(btns);
-
-        slide.appendChild(box);
-        return slide;
-      }
-
-      function setDots() {
-        dots.forEach(function (d, i) { d.classList.toggle("active", i === cur); });
-      }
-
-      function go(n, dir) {
-        if (slides.length < 2 || n === cur || busy) return;
-        busy = true;
-        setTimeout(function () { busy = false; }, ANIM);
-        dir = dir || 1;
-        var old = slides[cur], nw = slides[n];
-        if (dir < 0) {
-          nw.style.transition = "none";
-          nw.style.transform = "translateX(-100%)";
-          nw.style.visibility = "visible";
-          void nw.offsetWidth;
-          nw.style.transition = "";
-          nw.style.transform = "";
-          nw.style.visibility = "";
-          old.classList.add("rev");
-        }
-        old.classList.remove("active");
-        old.classList.add("leaving");
-        nw.classList.add("active");
-        setTimeout(function () { old.classList.remove("leaving", "rev"); }, ANIM - 20);
-        cur = n;
-        setDots();
-      }
-
-      function next() { go((cur + 1) % slides.length, 1); }
-      function prev() { go((cur - 1 + slides.length) % slides.length, -1); }
-
-      function stop() { if (timer) { clearInterval(timer); timer = null; } }
-      function start() {
-        stop();
-        if (slides.length > 1) timer = setInterval(function () { if (!document.hidden) next(); }, DELAY);
-      }
-
-      function build(items) {
-        stop();
-        track.innerHTML = "";
-        dotsBox.innerHTML = "";
-        slides = []; dots = [];
-
-        if (!items.length) { section.style.display = "none"; return; }
-        section.style.display = "";
-
-        if (cur >= items.length) cur = 0;
-        items.forEach(function (p, i) {
-          var s = makeSlide(p, i);
-          track.appendChild(s);
-          slides.push(s);
-
-          var d = el("button", "ph-slider-dot");
-          d.type = "button";
-          d.setAttribute("aria-label", "Go to " + p.cat + " banner");
-          d.addEventListener("click", function () { go(i, i > cur ? 1 : -1); start(); });
-          dotsBox.appendChild(d);
-          dots.push(d);
-        });
-
-        slides[cur].classList.add("active");
-        setDots();
-
-        var multi = slides.length > 1;
-        prevBtn.style.display = multi ? "" : "none";
-        nextBtn.style.display = multi ? "" : "none";
-        dotsBox.style.display = multi ? "" : "none";
-        start();
-      }
-
-      function update() {
-        var items = pick();
-        var s = JSON.stringify(items.map(function (p) { return [p.id, p.cat, p.name, p.price, p.old, p.img]; }));
-        if (s === sig) return;
-        sig = s;
-        build(items);
-      }
-
-      prevBtn.addEventListener("click", function () { prev(); start(); });
-      nextBtn.addEventListener("click", function () { next(); start(); });
-
-      /* pause while hovering / touching, swipe on mobile */
-      root.addEventListener("mouseenter", stop);
-      root.addEventListener("mouseleave", start);
-      var x0 = null;
-      root.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; stop(); }, { passive: true });
-      root.addEventListener("touchend", function (e) {
-        if (x0 !== null) {
-          var dx = e.changedTouches[0].clientX - x0;
-          if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
-        }
-        x0 = null;
-        start();
-      });
-
-      /* refresh whenever the product list is re-rendered (API load, filter, wishlist ...) */
-      if (typeof renderProducts === "function") {
-        var original = renderProducts;
-        renderProducts = function () {
-          var r = original.apply(this, arguments);
-          try { update(); } catch (e) { }
-          return r;
-        };
-      }
-      setInterval(function () { try { update(); } catch (e) { } }, 2000);
-      update();
-    } catch (err) {
-      console.error("Category banner error:", err);
-    }
-  })();
-</script>
-
 </body>
 
 </html>
