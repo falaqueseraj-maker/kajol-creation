@@ -1110,7 +1110,7 @@
             window.location.href = "seller-login.html";
 
         }
-        const ORDER_API_BASE_URL = "https://localhost:57742/api/Order";
+        const ORDER_API_BASE_URL = "https://kajolcreation-payment-api.onrender.com/api/Order";
 
         let orders = [];
         let ordersLoading = false;
@@ -1200,7 +1200,7 @@
                         Could not load orders from database.<br><br>
                         <small style="color:#777;">
                             Make sure the Kajol Creation API is running on
-                            https://localhost:57742
+                            https://kajolcreation-payment-api.onrender.com
                         </small><br><br>
                         <button class="view" type="button" onclick="loadOrdersFromDatabase()">
                             Retry
@@ -1229,7 +1229,7 @@
         ========================= */
 
         const PRODUCT_API_BASE_URL =
-            "https://localhost:57742/api/Product";
+            "https://kajolcreation-payment-api.onrender.com/api/Product";
 
         let sellerProducts = [];
 
