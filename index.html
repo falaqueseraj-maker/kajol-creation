@@ -5862,9 +5862,53 @@
 
 
     /* ===============================
+       PRODUCT DATABASE LOADING UI
+       Keeps the existing product design and
+       functions unchanged. Skeletons are shown
+       only when the grids are initially empty.
+    =============================== */
+    function showProductLoading() {
+      const productGrid = document.getElementById("productGrid");
+      const newGrid = document.getElementById("newGrid");
+
+      if (productGrid && productGrid.children.length === 0) {
+        productGrid.innerHTML = productSkeleton(4);
+      }
+
+      if (newGrid && newGrid.children.length === 0) {
+        newGrid.innerHTML = productSkeleton(4);
+      }
+    }
+
+    function productSkeleton(count = 4) {
+      return Array.from({ length: count }, () => `
+        <article class="product-skeleton">
+          <div class="skeleton-image"></div>
+          <div class="skeleton-info">
+            <div class="skeleton-line small"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line price"></div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    /* ===============================
        LOAD SELLER PRODUCTS FROM DATABASE
        =============================== */
     async function loadSellerProductsFromDatabase(showError = false) {
+      const hadProductsBeforeLoad =
+        sellerProducts.length > 0 ||
+        products.length > 0 ||
+        newProducts.length > 0;
+
+      // On the first load the grids are empty, so show the
+      // skeleton immediately. During the existing 30-second
+      // refresh, keep the current products visible.
+      if (!hadProductsBeforeLoad) {
+        showProductLoading();
+      }
       try {
         const response = await fetch(PRODUCT_API_BASE_URL, {
           method: "GET",
@@ -5913,8 +5957,25 @@
         sellerProducts = [];
         products.length = 0;
         newProducts.length = 0;
-        renderProducts();
-        renderNew();
+
+        const productGrid = document.getElementById("productGrid");
+        const newGrid = document.getElementById("newGrid");
+
+        if (productGrid) {
+          productGrid.innerHTML = `
+            <div class="product-loading-message">
+              Products are taking a little longer to load. Please wait a moment.
+            </div>
+          `;
+        }
+
+        if (newGrid) {
+          newGrid.innerHTML = `
+            <div class="product-loading-message">
+              New arrivals are taking a little longer to load. Please wait a moment.
+            </div>
+          `;
+        }
 
         if (showError) {
           toast("Could not load seller products");
@@ -9968,6 +10029,143 @@
     font-size: 10px !important;
   }
 }
+
+
+    /* =========================================
+       PRODUCT LOADING SKELETON
+       Only visible while seller products are
+       being loaded from the database.
+    ========================================= */
+
+    .product-skeleton {
+      min-width: 0;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 5px;
+    }
+
+    .skeleton-image {
+      width: 100%;
+      aspect-ratio: .88;
+      border-radius: 5px;
+      background: linear-gradient(
+        90deg,
+        #eee8df 25%,
+        #f8f5f1 37%,
+        #eee8df 63%
+      );
+      background-size: 400% 100%;
+      animation: productSkeletonShimmer 1.5s ease-in-out infinite;
+    }
+
+    .skeleton-info {
+      padding: 13px 2px;
+    }
+
+    .skeleton-line {
+      height: 9px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      background: linear-gradient(
+        90deg,
+        #eee8df 25%,
+        #f8f5f1 37%,
+        #eee8df 63%
+      );
+      background-size: 400% 100%;
+      animation: productSkeletonShimmer 1.5s ease-in-out infinite;
+    }
+
+    .skeleton-line.small {
+      width: 38%;
+    }
+
+    .skeleton-line.medium {
+      width: 72%;
+      height: 13px;
+    }
+
+    .skeleton-line.short {
+      width: 55%;
+    }
+
+    .skeleton-line.price {
+      width: 42%;
+      height: 13px;
+      margin-top: 14px;
+      margin-bottom: 0;
+    }
+
+    @keyframes productSkeletonShimmer {
+      0% {
+        background-position: 100% 0;
+      }
+
+      100% {
+        background-position: -100% 0;
+      }
+    }
+
+    .product-loading-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 9px;
+      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .product-loading-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: productLoadingPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes productLoadingPulse {
+      0%, 100% {
+        opacity: .3;
+        transform: scale(.8);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .product-loading-message {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 170px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 30px 20px;
+    }
+
+    @media(max-width:900px) {
+      .skeleton-image {
+        aspect-ratio: .88;
+      }
+    }
+
+    @media(max-width:600px) {
+      .skeleton-image {
+        aspect-ratio: .88;
+      }
+
+      .skeleton-info {
+        padding: 10px 2px;
+      }
+    }
 </style>
 
 <script id="ph-slider-js">
