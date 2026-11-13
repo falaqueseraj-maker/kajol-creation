@@ -5398,9 +5398,7 @@
                 <div style="font-size:12px;color:#756e67;margin-top:8px;">Amount to pay</div>
                 <div id="upiPayAmount" style="font-size:24px;font-weight:800;color:#173b78;">₹0</div>
               </div>
-              <p style="font-size:12px;line-height:1.5;color:#756e67;margin:12px 0;">1. QR scan karke exact amount pay karein. 2. Payment ke baad UTR / Transaction ID aur screenshot neeche submit karein. Seller transaction verify karne ke baad order accept karega.</p>
-              <label for="paymentUtr" style="display:block;font-size:12px;font-weight:700;margin:10px 0 6px;color:#62402e;">UPI UTR / Transaction ID *</label>
-              <input id="paymentUtr" type="text" maxlength="100" placeholder="Enter UTR / Transaction ID" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;outline:none;">
+              <p style="font-size:12px;line-height:1.5;color:#756e67;margin:12px 0;">1. QR scan karke exact amount pay karein. 2. Payment ke baad screenshot upload karke order submit karein. Seller apne UPI/bank account mein payment verify karne ke baad order accept karega.</p>
               <label for="paymentScreenshot" style="display:block;font-size:12px;font-weight:700;margin:12px 0 6px;color:#62402e;">Payment Screenshot *</label>
               <input id="paymentScreenshot" type="file" accept="image/png,image/jpeg,image/webp" style="width:100%;font-size:12px;">
               <div style="font-size:11px;color:#756e67;margin-top:5px;">PNG, JPG/JPEG or WEBP. Maximum file size: 4 MB.</div>
@@ -7177,7 +7175,7 @@
     /* ===============================
        CHECKOUT + PERSONAL UPI
        COD -> save immediately
-       ONLINE -> submit UTR + screenshot for seller verification
+       ONLINE -> upload payment screenshot for seller verification
        =============================== */
 
     const PAYMENT_API_BASE_URL = window.PARDA_API_ROOT;
@@ -7227,7 +7225,6 @@
         razorpayOrderId: extra.razorpayOrderId || null,
         razorpayPaymentId: extra.razorpayPaymentId || null,
         razorpaySignature: extra.razorpaySignature || null,
-        paymentUtr: extra.paymentUtr || null,
         paymentScreenshot: extra.paymentScreenshot || null,
         customerName: customerInfo.data.name,
         customerEmail: customerInfo.data.email,
@@ -7286,9 +7283,7 @@
       const total = cart.reduce((sum, item) => sum + Number(item.price) * Number(item.qty), 0);
       const amount = document.getElementById("upiPayAmount");
       if (amount) amount.textContent = money(total);
-      const utr = document.getElementById("paymentUtr");
       const screenshot = document.getElementById("paymentScreenshot");
-      if (utr) utr.required = isOnline;
       if (screenshot) screenshot.required = isOnline;
     }
 
@@ -7370,16 +7365,8 @@
         return;
       }
 
-      const utrInput = document.getElementById("paymentUtr");
       const screenshotInput = document.getElementById("paymentScreenshot");
-      const utr = utrInput?.value.trim() || "";
       const screenshotFile = screenshotInput?.files?.[0];
-
-      if (!utr) {
-        toast("Please enter UPI UTR / Transaction ID.");
-        utrInput?.focus();
-        return;
-      }
       if (!screenshotFile) {
         toast("Please upload your payment screenshot.");
         screenshotInput?.focus();
@@ -7413,7 +7400,7 @@
           customerInfo,
           "Online Payment",
           "Pending Verification",
-          { paymentUtr: utr, paymentScreenshot: paymentScreenshot }
+          { paymentScreenshot: paymentScreenshot }
         );
 
         finishSuccessfulOrder("Order submitted. Payment is Pending Verification. Seller will confirm after checking your transaction.");
