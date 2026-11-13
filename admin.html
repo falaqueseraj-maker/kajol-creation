@@ -807,6 +807,44 @@
             background: #8b2f2f;
             color: #fff;
         }
+
+        .payment-review {
+            margin-top: 18px;
+            padding: 16px;
+            border: 1px solid #e5dcd2;
+            border-radius: 10px;
+            background: #fffdf9;
+        }
+
+        .payment-review img {
+            display: block;
+            width: min(100%, 420px);
+            max-height: 520px;
+            object-fit: contain;
+            margin-top: 10px;
+            border: 1px solid #e5dcd2;
+            border-radius: 8px;
+            background: #f8f6f2;
+        }
+
+        .payment-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 14px;
+        }
+
+        .payment-accept, .payment-reject {
+            border: 0;
+            border-radius: 6px;
+            padding: 10px 15px;
+            font: 600 11px 'DM Sans', sans-serif;
+            cursor: pointer;
+        }
+
+        .payment-accept { background: #236b45; color: #fff; }
+        .payment-reject { background: #8b2f2f; color: #fff; }
+        .payment-note { color: #765d45; font-size: 11px; line-height: 1.6; margin-top: 10px; }
     </style>
 </head>
 
@@ -1106,11 +1144,28 @@
         function logout() {
 
             localStorage.removeItem("sellerLoggedIn");
+            localStorage.removeItem("sellerToken");
 
             window.location.href = "seller-login.html";
 
         }
+
         const ORDER_API_BASE_URL = "https://kajolcreation-payment-api.onrender.com/api/Order";
+
+        function getSellerToken() {
+            return localStorage.getItem("sellerToken") || "";
+        }
+
+        function sellerAuthHeaders(extra = {}) {
+            const token = getSellerToken();
+            if (!token) {
+                throw new Error("Seller session token nahi mila. Logout karke dobara Seller Login karo.");
+            }
+            return {
+                ...extra,
+                "Authorization": `Bearer ${token}`
+            };
+        }
 
         let orders = [];
         let ordersLoading = false;
@@ -1136,6 +1191,11 @@
                 status: order.status || "Pending",
                 payment: order.paymentMethod || "N/A",
                 paymentStatus: order.paymentStatus || "Pending",
+                paymentUtr: order.paymentUtr || "",
+                paymentScreenshot: order.paymentScreenshot || "",
+                paymentSubmittedAt: order.paymentSubmittedAt || null,
+                paymentVerifiedAt: order.paymentVerifiedAt || null,
+                paymentRejectionReason: order.paymentRejectionReason || "",
                 total: Number(order.totalAmount || 0),
                 subtotal: Number(order.subTotal || 0),
                 shippingCharge: Number(order.shippingCharge || 0),
@@ -1173,7 +1233,11 @@
             }
 
             try {
-                const response = await fetch(ORDER_API_BASE_URL);
+                const response = await fetch(ORDER_API_BASE_URL, {
+                    method: "GET",
+                    headers: sellerAuthHeaders(),
+                    cache: "no-store"
+                });
 
                 if (!response.ok) {
                     throw new Error(`Order API returned ${response.status}`);
@@ -2292,7 +2356,8 @@
 
                                         <td>
 
-                                            ${order.payment || "N/A"}
+                                            ${escapeHTML(order.payment || "N/A")}
+                                            <div class="date">${escapeHTML(order.paymentStatus || "Pending")}</div>
 
                                         </td>
 
@@ -2413,9 +2478,9 @@
                     `${ORDER_API_BASE_URL}/${order.id}/status`,
                     {
                         method: "PUT",
-                        headers: {
+                        headers: sellerAuthHeaders({
                             "Content-Type": "application/json"
-                        },
+                        }),
                         body: JSON.stringify({
                             status: value
                         })
@@ -2475,7 +2540,8 @@
                 const response = await fetch(
                     `${ORDER_API_BASE_URL}/${order.id}`,
                     {
-                        method: "DELETE"
+                        method: "DELETE",
+                        headers: sellerAuthHeaders()
                     }
                 );
 
@@ -2517,6 +2583,63 @@
                 );
             }
         }
+        async function verifyUpiPayment(id) {
+            const order = orders.find(item => String(item.id) === String(id));
+            if (!order) return;
+
+            const confirmed = confirm(
+                `Have you checked your actual UPI/bank transaction history and confirmed that ₹${Number(order.total).toLocaleString("en-IN")} was received with the same UTR?\n\nOnly accept after checking your account. A screenshot alone is not proof.`
+            );
+            if (!confirmed) return;
+
+            try {
+                const response = await fetch(`${ORDER_API_BASE_URL}/${order.id}/payment/verify`, {
+                    method: "PUT",
+                    headers: sellerAuthHeaders()
+                });
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || "Payment verification failed.");
+                }
+                alert(data.message || "Payment verified.");
+                await loadOrdersFromDatabase();
+                view(order.id);
+            } catch (error) {
+                console.error("UPI payment verification error:", error);
+                alert(error.message || "Could not verify payment.");
+            }
+        }
+
+        async function rejectUpiPayment(id) {
+            const order = orders.find(item => String(item.id) === String(id));
+            if (!order) return;
+
+            const reason = prompt("Payment reject karne ka reason likhein:");
+            if (reason === null) return;
+            if (!reason.trim()) {
+                alert("Rejection reason required hai.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${ORDER_API_BASE_URL}/${order.id}/payment/reject`, {
+                    method: "PUT",
+                    headers: sellerAuthHeaders({ "Content-Type": "application/json" }),
+                    body: JSON.stringify({ reason: reason.trim() })
+                });
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || "Payment rejection failed.");
+                }
+                alert(data.message || "Payment rejected.");
+                await loadOrdersFromDatabase();
+                view(order.id);
+            } catch (error) {
+                console.error("UPI payment rejection error:", error);
+                alert(error.message || "Could not reject payment.");
+            }
+        }
+
         /* =========================
            VIEW ORDER
         ========================= */
@@ -2709,6 +2832,25 @@
 
                 </div>
 
+
+                ${String(order.payment || "").toLowerCase().includes("online") || String(order.payment || "").toLowerCase().includes("upi") ? `
+                    <section class="payment-review">
+                        <h3 style="margin:0 0 12px;">UPI Payment Verification</h3>
+                        <div><strong>Payment Status:</strong> ${escapeHTML(order.paymentStatus || "Pending")}</div>
+                        <div style="margin-top:8px;"><strong>UTR / Transaction ID:</strong> ${escapeHTML(order.paymentUtr || "Not submitted")}</div>
+                        <div style="margin-top:8px;"><strong>Submitted At:</strong> ${order.paymentSubmittedAt ? new Date(order.paymentSubmittedAt).toLocaleString("en-IN") : "N/A"}</div>
+                        ${order.paymentVerifiedAt ? `<div style="margin-top:8px;"><strong>Verified At:</strong> ${new Date(order.paymentVerifiedAt).toLocaleString("en-IN")}</div>` : ""}
+                        ${order.paymentRejectionReason ? `<div style="margin-top:8px;color:#8b2f2f;"><strong>Rejection Reason:</strong> ${escapeHTML(order.paymentRejectionReason)}</div>` : ""}
+                        ${order.paymentScreenshot && /^data:image\/(png|jpe?g|webp);base64,/i.test(order.paymentScreenshot) ? `<div style="margin-top:14px;"><strong>Customer Payment Screenshot</strong><img src="${order.paymentScreenshot}" alt="Customer UPI payment screenshot"></div>` : `<p style="color:#8b2f2f;font-size:12px;">Payment screenshot not available or invalid.</p>`}
+                        ${order.paymentStatus === "Pending Verification" ? `
+                            <div class="payment-actions">
+                                <button type="button" class="payment-accept" onclick="verifyUpiPayment('${order.id}')">Accept Payment</button>
+                                <button type="button" class="payment-reject" onclick="rejectUpiPayment('${order.id}')">Reject Payment</button>
+                            </div>
+                            <p class="payment-note">Important: UTR aur exact amount apne actual bank / UPI app transaction history mein verify karein. Screenshot akela payment proof nahi hai. Payment verify hone ke baad hi order Confirm karein.</p>
+                        ` : ""}
+                    </section>
+                ` : ""}
 
                 <h3 style="margin-top:25px;">
                     Products
