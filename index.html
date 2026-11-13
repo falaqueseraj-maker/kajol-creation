@@ -5388,18 +5388,23 @@
 
             </div>
 
-            <div style="
-              margin-top:10px;
-              padding:10px 12px;
-              border-radius:7px;
-              background:#f8f4ef;
-              color:#756e67;
-              font-size:11px;
-              line-height:1.5;
-            ">
-              <strong style="color:#62402e;">Online Payment:</strong>
-              Your order will be saved only after Razorpay payment is completed
-              and the payment is verified successfully.
+            <div id="upiPaymentPanel" style="display:none;margin-top:14px;padding:16px;border:1px solid #e8dfd5;border-radius:10px;background:#fffdf9;">
+              <div style="font-weight:700;color:#62402e;font-size:14px;margin-bottom:8px;">Pay using any UPI app</div>
+              <div style="text-align:center;padding:12px;background:#f7f3ed;border-radius:8px;">
+                <img src="upi-qr.jpeg" alt="Iffat Parveen UPI QR Code" style="display:block;width:min(100%,280px);height:auto;margin:0 auto 10px;border-radius:6px;" onerror="this.style.display='none';document.getElementById('upiQrError').style.display='block';">
+                <div id="upiQrError" style="display:none;color:#b42318;font-size:12px;">QR image not found. Please ensure upi-qr.jpeg is in the same project folder as index.html.</div>
+                <div style="font-size:13px;color:#333;font-weight:700;">Iffat Parveen</div>
+                <div style="font-size:14px;color:#62402e;font-weight:700;margin-top:3px;">9559141319@ptyes</div>
+                <div style="font-size:12px;color:#756e67;margin-top:8px;">Amount to pay</div>
+                <div id="upiPayAmount" style="font-size:24px;font-weight:800;color:#173b78;">₹0</div>
+              </div>
+              <p style="font-size:12px;line-height:1.5;color:#756e67;margin:12px 0;">1. QR scan karke exact amount pay karein. 2. Payment ke baad UTR / Transaction ID aur screenshot neeche submit karein. Seller transaction verify karne ke baad order accept karega.</p>
+              <label for="paymentUtr" style="display:block;font-size:12px;font-weight:700;margin:10px 0 6px;color:#62402e;">UPI UTR / Transaction ID *</label>
+              <input id="paymentUtr" type="text" maxlength="100" placeholder="Enter UTR / Transaction ID" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;outline:none;">
+              <label for="paymentScreenshot" style="display:block;font-size:12px;font-weight:700;margin:12px 0 6px;color:#62402e;">Payment Screenshot *</label>
+              <input id="paymentScreenshot" type="file" accept="image/png,image/jpeg,image/webp" style="width:100%;font-size:12px;">
+              <div style="font-size:11px;color:#756e67;margin-top:5px;">PNG, JPG/JPEG or WEBP. Maximum file size: 4 MB.</div>
+              <div style="margin-top:10px;padding:9px 10px;border-radius:6px;background:#fff4e5;color:#805300;font-size:11px;line-height:1.5;">Payment screenshot alone is not confirmation. Order will remain Pending Verification until the seller checks the transaction in their UPI/bank account.</div>
             </div>
 
           </div>
@@ -5862,53 +5867,9 @@
 
 
     /* ===============================
-       PRODUCT DATABASE LOADING UI
-       Keeps the existing product design and
-       functions unchanged. Skeletons are shown
-       only when the grids are initially empty.
-    =============================== */
-    function showProductLoading() {
-      const productGrid = document.getElementById("productGrid");
-      const newGrid = document.getElementById("newGrid");
-
-      if (productGrid && productGrid.children.length === 0) {
-        productGrid.innerHTML = productSkeleton(4);
-      }
-
-      if (newGrid && newGrid.children.length === 0) {
-        newGrid.innerHTML = productSkeleton(4);
-      }
-    }
-
-    function productSkeleton(count = 4) {
-      return Array.from({ length: count }, () => `
-        <article class="product-skeleton">
-          <div class="skeleton-image"></div>
-          <div class="skeleton-info">
-            <div class="skeleton-line small"></div>
-            <div class="skeleton-line medium"></div>
-            <div class="skeleton-line short"></div>
-            <div class="skeleton-line price"></div>
-          </div>
-        </article>
-      `).join("");
-    }
-
-    /* ===============================
        LOAD SELLER PRODUCTS FROM DATABASE
        =============================== */
     async function loadSellerProductsFromDatabase(showError = false) {
-      const hadProductsBeforeLoad =
-        sellerProducts.length > 0 ||
-        products.length > 0 ||
-        newProducts.length > 0;
-
-      // On the first load the grids are empty, so show the
-      // skeleton immediately. During the existing 30-second
-      // refresh, keep the current products visible.
-      if (!hadProductsBeforeLoad) {
-        showProductLoading();
-      }
       try {
         const response = await fetch(PRODUCT_API_BASE_URL, {
           method: "GET",
@@ -5957,25 +5918,8 @@
         sellerProducts = [];
         products.length = 0;
         newProducts.length = 0;
-
-        const productGrid = document.getElementById("productGrid");
-        const newGrid = document.getElementById("newGrid");
-
-        if (productGrid) {
-          productGrid.innerHTML = `
-            <div class="product-loading-message">
-              Products are taking a little longer to load. Please wait a moment.
-            </div>
-          `;
-        }
-
-        if (newGrid) {
-          newGrid.innerHTML = `
-            <div class="product-loading-message">
-              New arrivals are taking a little longer to load. Please wait a moment.
-            </div>
-          `;
-        }
+        renderProducts();
+        renderNew();
 
         if (showError) {
           toast("Could not load seller products");
@@ -7223,6 +7167,7 @@
         const total = cart.reduce((sum, item) => sum + Number(item.price) * Number(item.qty), 0);
         const checkoutTotal = document.getElementById("checkoutTotal");
         if (checkoutTotal) checkoutTotal.textContent = money(total);
+        if (typeof updateCheckoutPaymentPanel === "function") updateCheckoutPaymentPanel();
 
         const checkoutModal = document.getElementById("checkoutModal");
         if (checkoutModal) checkoutModal.classList.add("show");
@@ -7230,9 +7175,9 @@
     }
 
     /* ===============================
-       CHECKOUT + RAZORPAY
+       CHECKOUT + PERSONAL UPI
        COD -> save immediately
-       ONLINE -> save ONLY after payment verification
+       ONLINE -> submit UTR + screenshot for seller verification
        =============================== */
 
     const PAYMENT_API_BASE_URL = window.PARDA_API_ROOT;
@@ -7282,6 +7227,8 @@
         razorpayOrderId: extra.razorpayOrderId || null,
         razorpayPaymentId: extra.razorpayPaymentId || null,
         razorpaySignature: extra.razorpaySignature || null,
+        paymentUtr: extra.paymentUtr || null,
+        paymentScreenshot: extra.paymentScreenshot || null,
         customerName: customerInfo.data.name,
         customerEmail: customerInfo.data.email,
         customerPhone: customerInfo.data.phone,
@@ -7331,220 +7278,24 @@
       toast(message);
     }
 
-    async function createRazorpayOrder(total, customerInfo) {
-      const response = await fetch(
-        PAYMENT_API_BASE_URL + "/api/Payment/CreateOrder",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            amount: Number(total),
-            receipt: "PH_" + Date.now(),
-            customerName: customerInfo.data.name,
-            customerEmail: customerInfo.data.email,
-            customerPhone: customerInfo.data.phone
-          })
-        }
-      );
-
-      const text = await response.text();
-      let data = {};
-      try { data = text ? JSON.parse(text) : {}; } catch { }
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || data.error || text || "Unable to create Razorpay order."
-        );
-      }
-
-      if (!data.keyId || !data.orderId || !data.amount || !data.currency) {
-        throw new Error("Invalid Razorpay order response from server.");
-      }
-
-      return data;
+    function updateCheckoutPaymentPanel() {
+      const selectedPayment = document.querySelector('input[name="payment"]:checked')?.value;
+      const panel = document.getElementById("upiPaymentPanel");
+      const isOnline = selectedPayment === "Online Payment";
+      if (panel) panel.style.display = isOnline ? "block" : "none";
+      const total = cart.reduce((sum, item) => sum + Number(item.price) * Number(item.qty), 0);
+      const amount = document.getElementById("upiPayAmount");
+      if (amount) amount.textContent = money(total);
+      const utr = document.getElementById("paymentUtr");
+      const screenshot = document.getElementById("paymentScreenshot");
+      if (utr) utr.required = isOnline;
+      if (screenshot) screenshot.required = isOnline;
     }
 
-    async function verifyRazorpayPayment(paymentResponse) {
-      const response = await fetch(
-        PAYMENT_API_BASE_URL + "/api/Payment/VerifyPayment",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            razorpayOrderId: paymentResponse.razorpay_order_id,
-            razorpayPaymentId: paymentResponse.razorpay_payment_id,
-            razorpaySignature: paymentResponse.razorpay_signature
-          })
-        }
-      );
-
-      const text = await response.text();
-      let data = {};
-      try { data = text ? JSON.parse(text) : {}; } catch { }
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || data.error || text || "Payment verification failed."
-        );
-      }
-
-      if (data.verified !== true) {
-        throw new Error("Payment could not be verified.");
-      }
-
-      return data;
-    }
-
-    function openRazorpayCheckout(razorpayOrder, customerInfo) {
-      return new Promise((resolve, reject) => {
-        if (typeof Razorpay === "undefined") {
-          reject(new Error("Razorpay Checkout could not be loaded. Please refresh the page."));
-          return;
-        }
-
-        let finished = false;
-
-        const resolveOnce = value => {
-          if (finished) return;
-          finished = true;
-          resolve(value);
-        };
-
-        const rejectOnce = error => {
-          if (finished) return;
-          finished = true;
-          reject(error);
-        };
-
-        const options = {
-          key: razorpayOrder.keyId,
-          amount: razorpayOrder.amount,
-          currency: razorpayOrder.currency,
-          name: "Kajol Creation",
-          description: "Kajol Creation Order",
-          order_id: razorpayOrder.orderId,
-
-          prefill: {
-            name: customerInfo.data.name,
-            email: customerInfo.data.email,
-            contact: customerInfo.data.phone
-          },
-
-          theme: { color: "#8b6045" },
-
-          handler: function (paymentResponse) {
-            resolveOnce(paymentResponse);
-          },
-
-          modal: {
-            confirm_close: true,
-            ondismiss: function () {
-              rejectOnce(new Error("Payment window was closed."));
-            }
-          }
-        };
-
-        try {
-          const rzp = new Razorpay(options);
-
-          /*
-            Payment fail hone par popup band nahi karte.
-            Customer usi popup me dobara try kar sakta hai (dusra card/UPI).
-            Agar yahan reject kar dete, to retry me paisa kat jaata
-            lekin order save nahi hota.
-          */
-          rzp.on("payment.failed", function (response) {
-            console.warn("Razorpay payment attempt failed:", response?.error);
-            toast(
-              (response?.error?.description || "Payment failed.") +
-              " You can try again."
-            );
-          });
-
-          rzp.open();
-        } catch (error) {
-          rejectOnce(error);
-        }
-      });
-    }
-
-    /* ===============================
-       PAID ORDER SAFETY
-       Agar paisa kat gaya lekin internet/server ki wajah se order save nahi hua,
-       to order browser me save rehta hai aur next visit par apne aap save ho jaata hai.
-       =============================== */
-    const PENDING_PAID_KEY = "pardaPendingPaidOrder";
-    const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-    function readPendingPaidOrder() {
-      try { return JSON.parse(localStorage.getItem(PENDING_PAID_KEY) || "null"); }
-      catch { return null; }
-    }
-    function writePendingPaidOrder(record) {
-      try { localStorage.setItem(PENDING_PAID_KEY, JSON.stringify(record)); } catch { }
-    }
-    function clearPendingPaidOrder() {
-      try { localStorage.removeItem(PENDING_PAID_KEY); } catch { }
-    }
-
-    // Sirf network failure par retry karte hain (server ne reject kiya ho to retry nahi)
-    async function saveOrderWithRetry(customerInfo, extra, tries = 3) {
-      let lastError;
-      for (let i = 0; i < tries; i++) {
-        try {
-          return await createDatabaseOrder(customerInfo, "Online Payment", "Paid", extra);
-        } catch (error) {
-          lastError = error;
-          if (!(error instanceof TypeError) || i === tries - 1) break;
-          await wait(1500 * (i + 1));
-        }
-      }
-      throw lastError;
-    }
-
-    async function recoverPendingPaidOrder() {
-      const pending = readPendingPaidOrder();
-      if (!pending || !pending.razorpay || !pending.customerInfo) return;
-
-      const current = JSON.parse(localStorage.getItem("currentCustomer") || "null");
-      const owner = pending.customerInfo.currentCustomer;
-      if (!current || !owner || String(current.id) !== String(owner.id)) return;
-
-      if ((pending.attempts || 0) >= 5) return;
-      pending.attempts = (pending.attempts || 0) + 1;
-      writePendingPaidOrder(pending);
-
-      try {
-        if (!pending.verified) {
-          await verifyRazorpayPayment({
-            razorpay_order_id: pending.razorpay.razorpayOrderId,
-            razorpay_payment_id: pending.razorpay.razorpayPaymentId,
-            razorpay_signature: pending.razorpay.razorpaySignature
-          });
-          pending.verified = true;
-          writePendingPaidOrder(pending);
-        }
-
-        await createDatabaseOrder(
-          pending.customerInfo,
-          "Online Payment",
-          "Paid",
-          { ...pending.razorpay, cartItems: pending.cartItems }
-        );
-
-        clearPendingPaidOrder();
-        toast("Your paid order has been saved. Thank you!");
-      } catch (error) {
-        console.error("Pending paid order recovery failed:", error);
-      }
-    }
-
-    function friendlyPaymentError(error) {
-      if (error instanceof TypeError) {
-        return "Could not connect to the payment server. Please try again in a moment.";
-      }
-      return error?.message || "Online payment could not be completed.";
-    }
+    document.querySelectorAll('input[name="payment"]').forEach(input => {
+      input.addEventListener("change", updateCheckoutPaymentPanel);
+    });
+    updateCheckoutPaymentPanel();
 
     document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -7619,119 +7370,69 @@
         return;
       }
 
-      onlinePaymentInProgress = true;
+      const utrInput = document.getElementById("paymentUtr");
+      const screenshotInput = document.getElementById("paymentScreenshot");
+      const utr = utrInput?.value.trim() || "";
+      const screenshotFile = screenshotInput?.files?.[0];
 
+      if (!utr) {
+        toast("Please enter UPI UTR / Transaction ID.");
+        utrInput?.focus();
+        return;
+      }
+      if (!screenshotFile) {
+        toast("Please upload your payment screenshot.");
+        screenshotInput?.focus();
+        return;
+      }
+      if (!/^image\/(png|jpeg|webp)$/.test(screenshotFile.type)) {
+        toast("Please upload a PNG, JPG/JPEG or WEBP image.");
+        return;
+      }
+      if (screenshotFile.size > 4 * 1024 * 1024) {
+        toast("Screenshot must be 4 MB or smaller.");
+        return;
+      }
+
+      onlinePaymentInProgress = true;
       if (submitButton) {
         submitButton.disabled = true;
-        submitButton.textContent = "Opening Payment...";
+        submitButton.textContent = "Submitting Payment Details...";
         submitButton.style.opacity = "0.65";
       }
 
-      // paymentResponse tabhi set hota hai jab Razorpay ne payment success bataya (paisa kat chuka hai)
-      let paymentResponse = null;
-
       try {
-        const razorpayOrder = await createRazorpayOrder(total, customerInfo);
+        const paymentScreenshot = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error("Could not read payment screenshot. Please select it again."));
+          reader.readAsDataURL(screenshotFile);
+        });
 
-        if (submitButton) {
-          submitButton.textContent = "Complete Payment...";
-        }
-
-        paymentResponse = await openRazorpayCheckout(
-          razorpayOrder,
-          customerInfo
+        await createDatabaseOrder(
+          customerInfo,
+          "Online Payment",
+          "Pending Verification",
+          { paymentUtr: utr, paymentScreenshot: paymentScreenshot }
         );
 
-        if (
-          !paymentResponse?.razorpay_order_id ||
-          !paymentResponse?.razorpay_payment_id ||
-          !paymentResponse?.razorpay_signature
-        ) {
-          throw new Error("Razorpay did not return complete payment details.");
-        }
-
-        const razorpayIds = {
-          razorpayOrderId: paymentResponse.razorpay_order_id,
-          razorpayPaymentId: paymentResponse.razorpay_payment_id,
-          razorpaySignature: paymentResponse.razorpay_signature
-        };
-        const cartSnapshot = cart.map(item => ({ ...item }));
-
-        // Payment ho chuka hai: pehle backup save karo, phir verify + order save
-        const pending = {
-          customerInfo,
-          cartItems: cartSnapshot,
-          razorpay: razorpayIds,
-          verified: false,
-          attempts: 0,
-          savedAt: Date.now()
-        };
-        writePendingPaidOrder(pending);
-
-        if (submitButton) {
-          submitButton.textContent = "Verifying Payment...";
-        }
-
-        await verifyRazorpayPayment(paymentResponse);
-
-        pending.verified = true;
-        writePendingPaidOrder(pending);
-
-        if (submitButton) {
-          submitButton.textContent = "Saving Order...";
-        }
-
-        await saveOrderWithRetry(
-          customerInfo,
-          { ...razorpayIds, cartItems: cartSnapshot }
-        );
-
-        clearPendingPaidOrder();
-        finishSuccessfulOrder("Payment successful! Order placed.");
-
+        finishSuccessfulOrder("Order submitted. Payment is Pending Verification. Seller will confirm after checking your transaction.");
       } catch (error) {
-        console.error("Razorpay checkout error:", error);
-
-        if (paymentResponse && paymentResponse.razorpay_payment_id) {
-          /*
-            Paisa kat chuka hai lekin order confirm/save nahi ho paya.
-            Cart clear karte hain taaki customer dobara payment na kare;
-            order backup se apne aap dobara save hoga.
-          */
-          finishSuccessfulOrder("Payment received. We are confirming your order.");
-          alert(
-            "Your payment was received (Payment ID: " +
-            paymentResponse.razorpay_payment_id +
-            ") but we could not finish confirming your order right now.\n\n" +
-            "Please do NOT pay again. Your order will be saved automatically " +
-            "when you open this website again. If it does not appear in " +
-            "My Orders, contact us with this Payment ID."
-          );
-        } else {
-          const message = friendlyPaymentError(error);
-
-          if (message === "Payment window was closed.") {
-            toast("Payment cancelled. Your order was NOT saved.");
-          } else {
-            toast(message + " Your order was NOT saved.");
-          }
-        }
-
+        console.error("UPI order submission error:", error);
+        toast(error.message || "Could not submit your payment details. Please try again.");
       } finally {
         onlinePaymentInProgress = false;
-
         if (submitButton) {
           submitButton.disabled = false;
           submitButton.textContent = "Place Order";
           submitButton.style.opacity = "";
         }
       }
+
     });
 
     renderProducts(); renderNew(); updateCounts(); renderCart();
 
-    // Pehle ka paid-but-unsaved order (agar ho) dobara save karo
-    setTimeout(recoverPendingPaidOrder, 2000);
     refreshCustomerNotifications();
     /* ===============================
        CUSTOMER ACCOUNT / LOGIN FLOW
@@ -10029,143 +9730,6 @@
     font-size: 10px !important;
   }
 }
-
-
-    /* =========================================
-       PRODUCT LOADING SKELETON
-       Only visible while seller products are
-       being loaded from the database.
-    ========================================= */
-
-    .product-skeleton {
-      min-width: 0;
-      overflow: hidden;
-      background: #fff;
-      border-radius: 5px;
-    }
-
-    .skeleton-image {
-      width: 100%;
-      aspect-ratio: .88;
-      border-radius: 5px;
-      background: linear-gradient(
-        90deg,
-        #eee8df 25%,
-        #f8f5f1 37%,
-        #eee8df 63%
-      );
-      background-size: 400% 100%;
-      animation: productSkeletonShimmer 1.5s ease-in-out infinite;
-    }
-
-    .skeleton-info {
-      padding: 13px 2px;
-    }
-
-    .skeleton-line {
-      height: 9px;
-      border-radius: 20px;
-      margin-bottom: 10px;
-      background: linear-gradient(
-        90deg,
-        #eee8df 25%,
-        #f8f5f1 37%,
-        #eee8df 63%
-      );
-      background-size: 400% 100%;
-      animation: productSkeletonShimmer 1.5s ease-in-out infinite;
-    }
-
-    .skeleton-line.small {
-      width: 38%;
-    }
-
-    .skeleton-line.medium {
-      width: 72%;
-      height: 13px;
-    }
-
-    .skeleton-line.short {
-      width: 55%;
-    }
-
-    .skeleton-line.price {
-      width: 42%;
-      height: 13px;
-      margin-top: 14px;
-      margin-bottom: 0;
-    }
-
-    @keyframes productSkeletonShimmer {
-      0% {
-        background-position: 100% 0;
-      }
-
-      100% {
-        background-position: -100% 0;
-      }
-    }
-
-    .product-loading-note {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 9px;
-      color: var(--accent);
-      font-size: 10px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .product-loading-dot {
-      width: 7px;
-      height: 7px;
-      flex: 0 0 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: productLoadingPulse 1s ease-in-out infinite;
-    }
-
-    @keyframes productLoadingPulse {
-      0%, 100% {
-        opacity: .3;
-        transform: scale(.8);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .product-loading-message {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 170px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 30px 20px;
-    }
-
-    @media(max-width:900px) {
-      .skeleton-image {
-        aspect-ratio: .88;
-      }
-    }
-
-    @media(max-width:600px) {
-      .skeleton-image {
-        aspect-ratio: .88;
-      }
-
-      .skeleton-info {
-        padding: 10px 2px;
-      }
-    }
 </style>
 
 <script id="ph-slider-js">
