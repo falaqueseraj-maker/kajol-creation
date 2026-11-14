@@ -9971,6 +9971,123 @@
     .mobile-view-product:active { background: #62402e; }
   }
 </style>
-\n</body>
+\n
+
+<style id="kajol-checkout-mobile-only-fix">
+/* Phone-only checkout improvements. Desktop/laptop styles remain unchanged. */
+@media (max-width: 700px) {
+  #checkoutModal {
+    align-items: flex-start;
+    justify-content: center;
+    padding: 12px 10px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #checkoutModal .modal-card {
+    width: 100%;
+    max-width: 520px;
+    max-height: calc(100dvh - 24px);
+    margin: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 14px;
+    box-sizing: border-box;
+  }
+
+  #checkoutModal .modal-card > div {
+    padding: 24px 16px 22px !important;
+    box-sizing: border-box;
+  }
+
+  #checkoutModal .modal-close {
+    top: 9px;
+    right: 9px;
+    width: 34px;
+    height: 34px;
+  }
+
+  #checkoutModal h2 {
+    font-size: 25px;
+    line-height: 1.2;
+    padding-right: 28px;
+    margin-bottom: 20px !important;
+  }
+
+  /* Stack customer name and mobile number on phones. */
+  #checkoutForm > div:nth-of-type(1),
+  #checkoutForm > div:nth-of-type(2) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #checkoutForm > input,
+  #checkoutForm > textarea,
+  #checkoutForm input:not([type="radio"]):not([type="file"]),
+  #checkoutForm textarea {
+    display: block;
+    width: 100% !important;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    font-size: 16px !important;
+    line-height: 1.4;
+  }
+
+  #checkoutForm > input,
+  #checkoutForm > textarea {
+    margin-top: 10px !important;
+  }
+
+  #checkoutForm textarea {
+    min-height: 96px;
+  }
+
+  #checkoutForm > div:nth-of-type(3) {
+    margin-top: 18px !important;
+  }
+
+  #checkoutForm > div:nth-of-type(3) label.size {
+    flex: 1 1 100%;
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  #upiPaymentPanel {
+    padding: 12px !important;
+    overflow-wrap: anywhere;
+  }
+
+  #upiPaymentPanel img {
+    width: min(100%, 240px) !important;
+  }
+
+  #paymentScreenshot {
+    width: 100% !important;
+    max-width: 100%;
+    font-size: 13px !important;
+  }
+
+  #checkoutTotal {
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+
+  #checkoutForm button[type="submit"] {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 14px !important;
+  }
+}
+</style>
+
+</body>
 
 </html>
