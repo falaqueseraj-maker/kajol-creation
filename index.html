@@ -5867,7 +5867,24 @@
     /* ===============================
        LOAD SELLER PRODUCTS FROM DATABASE
        =============================== */
+    function showProductLoadingState() {
+      const skeleton = (count) => Array.from({ length: count }, () => `
+        <div class="product-skeleton" aria-hidden="true">
+          <div class="skeleton-image"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line price-line"></div>
+        </div>
+      `).join("");
+      const bestGrid = document.getElementById("productGrid");
+      const newGrid = document.getElementById("newGrid");
+      if (bestGrid && !products.length) bestGrid.innerHTML = skeleton(4);
+      if (newGrid && !newProducts.length) newGrid.innerHTML = skeleton(4);
+    }
+
     async function loadSellerProductsFromDatabase(showError = false) {
+      const isInitialProductLoad = !window.__kajolProductsLoaded;
+      if (isInitialProductLoad) showProductLoadingState();
       try {
         const response = await fetch(PRODUCT_API_BASE_URL, {
           method: "GET",
@@ -5904,6 +5921,7 @@
         renderProducts();
         renderNew();
         updateCounts();
+        window.__kajolProductsLoaded = true;
 
         console.log(
           "Kajol Creation seller products loaded:",
@@ -5918,6 +5936,7 @@
         newProducts.length = 0;
         renderProducts();
         renderNew();
+        window.__kajolProductsLoaded = true;
 
         if (showError) {
           toast("Could not load seller products");
@@ -5948,18 +5967,23 @@
     }
     function card(p, isNew = false) {
       const wished = wishlist.includes(p.id);
-      return `<article class="product">
+      return `<article class="product" role="button" tabindex="0"
+   aria-label="View ${p.name}"
+   onclick="openDetail(${p.id},${isNew})"
+   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDetail(${p.id},${isNew})}">
    <div class="product-image">
      <img src="${p.img}" alt="${p.name}" loading="lazy">
      ${p.isSellerProduct ? `<span class="badge">${p.isNew ? 'NEW' : 'SHOP'}</span>` : (!isNew ? '<span class="badge">BEST SELLER</span>' : '<span class="badge">NEW</span>')}
-     <button class="wish ${wished ? 'active' : ''}" onclick="toggleWish(${p.id})">${wished ? '♥' : '♡'}</button>
-     <button class="quick" onclick="openDetail(${p.id},${isNew})">VIEW PRODUCT</button>
+     <button class="wish ${wished ? 'active' : ''}" onclick="event.stopPropagation();toggleWish(${p.id})">${wished ? '♥' : '♡'}</button>
+     <button class="quick" onclick="event.stopPropagation();openDetail(${p.id},${isNew})">VIEW PRODUCT</button>
    </div>
    <div class="product-info">
      <div class="product-cat">${p.cat}</div>
      <div class="product-name">${p.name}</div>
      ${!isNew ? `<div><span class="stars">★★★★★</span><span class="rating">${p.rating}</span></div>` : ''}
      <div class="price">${money(p.price)}${p.old ? `<span class="old">${money(p.old)}</span>` : ''}</div>
+     <button type="button" class="mobile-view-product"
+       onclick="event.stopPropagation();openDetail(${p.id},${isNew})">VIEW PRODUCT</button>
    </div>
  </article>`;
     }
@@ -7122,13 +7146,6 @@
 
         await loadCustomerNotifications();
 
-        if (
-          document
-            .getElementById("ordersModal")
-            ?.classList.contains("show")
-        ) {
-          renderCustomerOrders();
-        }
       },
       15000
     );
@@ -9921,6 +9938,39 @@
   })();
 </script>
 
-</body>
+
+<style id="kajol-mobile-product-fixes">
+  .product[role="button"] { cursor: pointer; }
+  .mobile-view-product { display: none; }
+  .product-skeleton { min-width: 0; overflow: hidden; }
+  .skeleton-image {
+    width: 100%; aspect-ratio: .88; border-radius: 5px;
+    background: linear-gradient(100deg,#eee8df 25%,#f8f5f0 40%,#eee8df 60%);
+    background-size: 200% 100%; animation: kajolShimmer 1.25s ease-in-out infinite;
+  }
+  .skeleton-line {
+    height: 10px; width: 78%; margin: 12px 2px 0; border-radius: 8px;
+    background: linear-gradient(100deg,#eee8df 25%,#f8f5f0 40%,#eee8df 60%);
+    background-size: 200% 100%; animation: kajolShimmer 1.25s ease-in-out infinite;
+  }
+  .skeleton-line.short { width: 42%; height: 8px; margin-top: 14px; }
+  .skeleton-line.price-line { width: 32%; height: 11px; margin-top: 10px; }
+  @keyframes kajolShimmer {
+    from { background-position: 100% 0; }
+    to { background-position: -100% 0; }
+  }
+  @media (max-width: 900px) {
+    .product[role="button"] { -webkit-tap-highlight-color: transparent; }
+    .mobile-view-product {
+      display: flex; width: 100%; min-height: 36px; margin-top: 10px;
+      align-items: center; justify-content: center;
+      border: 1px solid #8b6045; border-radius: 4px;
+      background: #8b6045; color: #fff; font-size: 10px;
+      font-weight: 700; letter-spacing: .04em; cursor: pointer;
+    }
+    .mobile-view-product:active { background: #62402e; }
+  }
+</style>
+\n</body>
 
 </html>
