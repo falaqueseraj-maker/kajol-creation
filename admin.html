@@ -1239,6 +1239,15 @@
                     cache: "no-store"
                 });
 
+                if (response.status === 401) {
+                    // The saved JWT has expired or is no longer valid.
+                    localStorage.removeItem("sellerLoggedIn");
+                    localStorage.removeItem("sellerToken");
+                    alert("Your seller session has expired. Please log in again.");
+                    window.location.replace("seller-login.html");
+                    return;
+                }
+
                 if (!response.ok) {
                     throw new Error(`Order API returned ${response.status}`);
                 }
